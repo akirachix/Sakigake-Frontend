@@ -1,0 +1,33 @@
+name: Next.js CI/CD
+
+on:
+  push:
+    branches:
+      - main # specify your main branch here
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # specify the node version
+    
+    # Install Packages
+    - name: Install Packages
+      run: npm install
+
+    # Check Code Formatting
+    - name: Check Formatting
+      run: npx prettier --check . 
+
+    # Build Next.js
+    - name: Build
+      run: npm run build
