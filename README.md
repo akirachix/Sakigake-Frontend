@@ -19,65 +19,6 @@ git clone https://github.com/akirachix/Sakigake-Frontend.git
 cd Sakigake-Frontend
 ```
 
-# Project Folder Structure
-mzaziconnect-dashboard/
- <br/>
-  .eslintrc.json
-   <br/>
-  .gitignore
-   <br/>
-  next-env.d.ts
-   <br/>
-  next.config.js
-   <br/>
-  package-lock.json
-   <br/>
-  postcss.config.js
-   <br/>
-  README.md
-   <br/>
-  taiwind.config.ts
-   <br/>
-  tsconfig.json
-   <br/>
-
-  .next/
-   <br/>
-    build/
-     <br/>
-    cache/
-     <br/>
-    server/
-     <br/>
-    static/
-     <br/>
-    app-build-manifest.json
-     <br/>
-    build-manifest.json
-     <br/>
-    react-loadable-manifest.json
-     <br/>
-
-  app/
-   <br/>
-    globals.css
-     <br/>
-    layout.tsx
-     <br/>
-    page.tsx
-     <br/>
-
-  node_modules/
-   <br/>
-  package.json
-   <br/>
-  public/
-   <br/>
-    next.svg
-     <br/>
-    vercel.svg
-     <br/>
-
 # Run the app in the development mode
 ``` sh
  npm run dev
