@@ -7,7 +7,7 @@ The MzaziConnect dashboard allows schools to have complete control and oversight
 
 
 ## Getting Started
-Follow these steps to install and interact with MzazaConnact Dashboard
+Follow these steps to install and interact with MzazaConnect Dashboard
 
 # Clone the repository
 ``` sh 
@@ -18,28 +18,6 @@ git clone https://github.com/akirachix/Sakigake-Frontend.git
 ``` sh 
 cd Sakigake-Frontend
 ```
-
-# Create React App
-``` sh 
-npx create-next-app@latest
-```
-
-# installation prompts
--What is your project named? mzaziconnect-dashboard
- <br/>
--Would you like to use TypeScript? No / Yes
- <br/>
--Would you like to use ESLint? No / Yes
- <br/>
--Would you like to use Tailwind CSS? No / Yes
- <br/>
--Would you like to use `src/` directory? No / Yes
- <br/>
--Would you like to use App Router? (recommended) No / Yes
- <br/>
--Would you like to customize the default import alias? No / Yes
- <br/>
--What import alias would you like configured? @/*
 
 # Project Folder Structure
 mzaziconnect-dashboard/
