@@ -6,13 +6,13 @@ The MzaziConnect dashboard allows schools to have complete control and oversight
 Follow these steps to install and interact with MzazaConnact Dashboard
 
 # Clone the repository
-git clone https://github.com/akirachix/Sakigake-Frontend.git
+`$ git clone https://github.com/akirachix/Sakigake-Frontend.git`
 
 # Navigate to the project directory
-cd Sakigake-Frontend
+`$ cd Sakigake-Frontend`
 
 # Create React App
-npx create-next-app@latest
+`$ npx create-next-app@latest`
 
 # installation prompts
 -What is your project named? mzaziconnect-dashboard
@@ -91,7 +91,7 @@ mzaziconnect-dashboard/
      <br/>
 
 # Run the app in the development mode
-- npm run dev
+- `$ npm run dev`
 
 To view in the browser: http://localhost:3000/
 
