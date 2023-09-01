@@ -12,28 +12,53 @@ git clone https://github.com/akirachix/Sakigake-Frontend.git
 cd Sakigake-Frontend
 
 # Create React App
-npx create-react-app mzaziconnect-dashboard
+npx create-next-app@latest
+
+# installation prompts
+What is your project named? mzaziconnect-dashboard
+Would you like to use TypeScript? No / Yes
+Would you like to use ESLint? No / Yes
+Would you like to use Tailwind CSS? No / Yes
+Would you like to use `src/` directory? No / Yes
+Would you like to use App Router? (recommended) No / Yes
+Would you like to customize the default import alias? No / Yes
+What import alias would you like configured? @/*
 
 # Folder Structure
 mzaziconnect-dashboard/
-  README.md
-  package-lock.json
+  .eslintrc.json
   .gitignore
+  next-env.d.ts
+  next.config.js
+  package-lock.json
+  postcss.config.js
+  README.md
+  taiwind.config.ts
+  tsconfig.json
+
+  .next/
+    build/
+    cache/
+    server/
+    static/
+    app-build-manifest.json
+    build-manifest.json
+    react-loadable-manifest.json
+
+  app/
+    globals.css
+    layout.tsx
+    page.tsx
+
   node_modules/
   package.json
+
   public/
-    index.html
-    favicon.ico
-  src/
-    App.css
-    App.js
-    App.test.js
-    index.css
-    index.js
-    logo.svg
+    next.svg
+    vercel.svg
 
 # Run the app in the development mode
-- npm start
+- npm run dev
 
 To view in the browser: http://localhost:3000/
 
