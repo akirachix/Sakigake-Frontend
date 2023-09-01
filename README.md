@@ -1,5 +1,5 @@
 # MzaziConnect Dashboard
-MzaziConnect dashboard enables schools to control and view everything that goes on in their school. The school is able to create an account using their personal information ie email address, phone number and password. After getting onto the platform the school then has the ability to add or remove the various grades, the respective teachers of those grades as well as the details of the children's parents.
+The MzaziConnect dashboard allows schools to have complete control and oversight over their operations. Schools can create an account using their own email address, phone number, and password. Once logged in, schools can easily add or remove grade levels, assign teachers to specific grades, and input parent information. This dashboard ensures that schools have the necessary tools to efficiently manage all aspects of their institution.
 
 
 ## Getting Started
