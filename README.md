@@ -16,15 +16,22 @@ npx create-next-app@latest
 
 # installation prompts
 -What is your project named? mzaziconnect-dashboard
+ <br/>
 -Would you like to use TypeScript? No / Yes
+ <br/>
 -Would you like to use ESLint? No / Yes
+ <br/>
 -Would you like to use Tailwind CSS? No / Yes
+ <br/>
 -Would you like to use `src/` directory? No / Yes
+ <br/>
 -Would you like to use App Router? (recommended) No / Yes
+ <br/>
 -Would you like to customize the default import alias? No / Yes
+ <br/>
 -What import alias would you like configured? @/*
 
-# Folder Structure
+# Project Folder Structure
 mzaziconnect-dashboard/
  <br/>
   .eslintrc.json
