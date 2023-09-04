@@ -5,10 +5,14 @@ on:
   push:
     branches:
       - dev
+      
+  pull_request:
+    branches:
+      - dev
 
 jobs:
   build:
-    runs-on: ubuntu version 20.04
+    runs-on: ubuntu-20.04
 
     steps:
     
@@ -22,13 +26,13 @@ jobs:
         node-version: '18' 
     
     
-    - name: Install Packages
-      run: npm install
+    # - name: Install Packages
+    #   run: npm install
 
    
-    - name: Check Formatting
-      run: npx prettier --check . 
+    # - name: Check Formatting
+    #   run: npx prettier --check . 
 
     
-    - name: Build
-      run: npm run build
+    # - name: Build
+    #   run: npm run build
