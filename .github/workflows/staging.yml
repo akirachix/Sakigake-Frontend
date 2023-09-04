@@ -4,7 +4,14 @@ name: Next.js CI/CD
 on:
   push:
     branches:
-      - staging
+      -main
+      -dev
+      -staging
+  pull_request:
+    branches:
+      -main
+      -dev
+      -staging
 
 jobs:
   build:
