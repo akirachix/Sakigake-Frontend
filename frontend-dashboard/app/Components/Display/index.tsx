@@ -15,28 +15,28 @@ let data = [
 
 const Display = () => {
     return (
-        <section className="rounded-full border-black md:mr-6 sm:mx-2">
-            <div className="flex flex-col sm:flex-row mx-2 md:mx-20 bg-blue-500 rounded mt-4 md:mt-20 sm:mt-0">
-                <div className="w-full sm:w-1/2 p-2 h-auto md:h-44">
-                    <h1 className="text-white p-4 md:p-8 text-2xl font-bold ">Welcome to Utawala Primary <br /> School Dashboard</h1>
-                    <p className="text-gray-200 p-2 md:pl-8 text-sm">Track your school activities in one place</p>
+        <section className=" border-black my-20 sm:mt-0 my-0 md:mx-0  md:mr-6 mt-0 ">
+            <div className="flex flex-col rounded-3xl sm:flex-row mt-0  md:mx-20 bg-blue-500 rounded-0  md:mt-40 mb-20 sm:mt-0 rounded-0">
+                <div className="w-full sm:w-1/2 p-2 h-auto ">
+                    <h1 className="text-white p-4 leading-relaxed md:p-8 text-4xl font-bold ">Welcome to Utawala Primary <br /> School Dashboard</h1>
+                    <p className="text-lightblue text-xl p-2 md:pl-8 ">Track your school activities in one place</p>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/2 md:float-right">
-                    <img className="h-300 ml-0 sm:ml-0 md:ml-0 md:mr-60" src="media/dashboard.png" alt="" />
+                    <img className="h-300 w-full sm:ml-0 md:ml-0 " src="media/dashboard.png" alt="" />
                 </div>
             </div>
-            <div className="flex items-center my-4 sm:my-10 ml-2 md:ml-20 ">
-                <input className="border border-gray-300 py-2 sm:py-4 w-full md:w-1/2" type="text" placeholder="Search for class/teacher/student..." />
+            <div className="flex items-center mt-8 mb-2 sm:my-10 m-10 md:ml-20">
+                <input className="border border-gray-300 py-2 px-4 sm:py-4 w-full md:w-1/2" type="text" placeholder=" Search for class/teacher/student..." />
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 md:gap-16 mx-2 md:mx-20 ">
+            <div className="flex flex-col py-8 px-16 sm:flex-row gap-4 md:gap-16  ">
                 {data.map((item, index) => (
-                    <div className="py-6 sm:py-12 px-4 md:px-16 flex bg-gray-200" key={index} >
-                        <div className="rounded-full bg-blue-500 p-2 sm:p-12 mr-4 md:mr-4 ">
-                            <i className="rounded-full text-2xl md:text-3xl text-white  ">{item.icon}</i>
+                    <div className="py-12 mt-2 text-2xl sm:py-12 md:px-14 flex bg-gray-200" key={index} >
+                        <div className="rounded-full mr-8 bg-blue-500 p-6 sm:mr-20 md:mr-20 ">
+                            <i className="rounded-full text-6xl text-white md:text-42xl  ">{item.icon}</i>
                         </div>
                         <div>
-                            <h2 className="text-gray-400">{item.user}</h2> <br />
-                            <p className="font-extrabold text-xl md:text-3xl text-navy">{item.number}</p>
+                            <h2 className="text-textgrey">{item.user}</h2> <br />
+                            <p className="font-extrabold  md:text-4xl text-navyblue">{item.number}</p>
                         </div>
                     </div>
                 ))}
