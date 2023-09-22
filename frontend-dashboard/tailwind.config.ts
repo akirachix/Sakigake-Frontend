@@ -15,7 +15,8 @@ const config: Config = {
         mainblue: "#008CBF",
         hoverblue: "#509CDB",
         white: "#fff",
-        maingrey:'#484848'
+        maingrey:'#484848',
+        bordercolor:'#CECECE',
       }
     },
     fontFamily:{
