@@ -15,13 +15,35 @@ const config: Config = {
         textgrey:'#A098AE',
         lightblue:'#B4DCFE',
         lightgrey:'#667085',
-        mildgrey:'#484848',  
+        mildgrey:'#484848', 
+        darkgrey:'#4F4F4F', 
+        bgblue:'#008CBF',
+        buttonblue:'#509CDB',
+        gregrey:'#CECECE',
       },
       fontFamily:{
         baloo:[ 'Baloo Bhai 2', 'cursive' ],
         jost:[ 'Jost' ]
       },
+      width: {
+        '248': '248px',
+        '208px':'208px',
+        '160':'160 px',
+
+      },
+      height: {
+        '42':'42',
+        '128':'128',
+        '100':'100 px'
+      },
+      margin: {
+        '150':'150',
+      },
+      fontSize:{
+        '28px':'28px'
+      }
     },
+
   },
   plugins: [],
 }
