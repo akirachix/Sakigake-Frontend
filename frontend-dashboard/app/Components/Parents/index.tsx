@@ -100,7 +100,7 @@ function Parents() {
           <div className="w-1/2 h-1/2">
             <table className="w-full border border-collapse mt-20 mx-40">
               <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-gray-100 text-left">
                   <th className="px-2 py-2">Parent Name</th>
                   <th className="px-2 py-2">Phone Number</th>
                   <th className="px-2 py-2">Email</th>
@@ -110,7 +110,7 @@ function Parents() {
               </thead>
               <tbody>
                 {filteredParents.map((parent, index) => (
-                  <tr key={index} className="border-collapse text-center">
+                  <tr key={index} className="border-collapse text-left text-gray-500 text-sm">
                     <td className="px-2 py-2">{parent.parentName}</td>
                     <td className="px-2 py-2">{parent.phoneNumber}</td>
                     <td className="px-2 py-2">{parent.email}</td>
