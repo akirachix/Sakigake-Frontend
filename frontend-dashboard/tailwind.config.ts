@@ -9,10 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        pattern: "url('/images/background.png')",
       },
+      colors:{
+        mainblue: "#008CBF",
+        hoverblue: "#509CDB",
+        white: "#fff",
+        maingrey:'#484848',
+        bordercolor:'#CECECE',
+      }
+    },
+    fontFamily:{
+      baloo:[ 'Baloo Bhai 2', 'cursive' ],
+      jost:[ 'Jost' ]
     },
   },
   plugins: [],
