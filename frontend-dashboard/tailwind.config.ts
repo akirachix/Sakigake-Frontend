@@ -8,6 +8,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
+ feature/subjects
       colors: { 
         textblue:'#008CBF',
         navyblue:'#303972',
@@ -42,6 +43,22 @@ const config: Config = {
       fontSize:{
         '28px':'28px'
       }
+
+      backgroundImage: {
+        pattern: "url('/images/background.png')",
+      },
+      colors:{
+        mainblue: "#008CBF",
+        hoverblue: "#509CDB",
+        white: "#fff",
+        maingrey:'#484848',
+        bordercolor:'#CECECE',
+      }
+    },
+    fontFamily:{
+      baloo:[ 'Baloo Bhai 2', 'cursive' ],
+      jost:[ 'Jost' ]
+      dev
     },
 
   },
