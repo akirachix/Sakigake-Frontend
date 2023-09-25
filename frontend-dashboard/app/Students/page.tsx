@@ -1,7 +1,10 @@
 'use client'
 import React, { useState } from "react";
-import { TbX } from "react-icons/tb";
+import { TbX, TbEdit} from "react-icons/tb";
+import { AiOutlineDelete } from "react-icons/ai";  
 
+
+// AiOutLineDelete
 
 interface Student {
   student: string;
@@ -9,6 +12,7 @@ interface Student {
   parent: string;
   phoneNumber: string;
 }
+
 const Student = () => {
   const [showForm, setShowForm] = useState(false);
   const [student, setStudent] = useState<Student[]>([]);
@@ -18,12 +22,27 @@ const Student = () => {
     parent: "",
     phoneNumber: "",
   });
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStudent([...student, formData]);
-    setFormData({ student: "", grade: "", parent: "", phoneNumber:"" });
+    setFormData({ student: "", grade: "", parent: "", phoneNumber: "" });
     setShowForm(false);
   };
+
+  const handleDeleteStudent = (index: number) => {
+    const updatedStudentList = [...student];
+    updatedStudentList.splice(index, 1);
+    setStudent(updatedStudentList);
+  };
+
+  const handleEditStudent = (index: number) => {
+    const editedStudent = student[index];
+    setFormData(editedStudent);
+    handleDeleteStudent(index);
+    setShowForm(true);
+  };
+
   return (
     <section className="m-12">
 
@@ -36,7 +55,7 @@ const Student = () => {
   </button>
 </div>
       <div className="mb-6 pt-24">
-        <input className="border text-maingrey border-bordercolor text-sm py-3 px-4 ml-44 w-full rounded" type="text" placeholder="Search for student ..."/>
+        <input className="border text-maingrey border-bordercolor text-sm py-3 px-4 ml-40 w-full rounded" type="text" placeholder="Search for student ..."/>
       </div>
       
       {showForm && (
@@ -116,24 +135,33 @@ const Student = () => {
         </div>
       )}
 
-      {student.length > 0 ? (
+{student.length > 0 ? (
         <div className="">
-          <table className="w-full border border-collapse mt-20 mx-44">
+          <table className="w-full border border-collapse mt-20 mx-40">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="px-2 py-2">Subject</th>
-                <th className="px-2 py-2">Teacher</th>
+              <tr className="bg-gray-100 text-left">
+                <th className="px-2 py-2">Student</th>
+                <th className="px-2 py-2">Parent</th>
                 <th className="px-2 py-2">Grade</th>
                 <th className="px-2 py-2">Phone Number</th>
+                <th className="px-2 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {student.map((student, index) => (
-                <tr key={index} className="border-collapse text-center">
+                <tr key={index} className="border-collapse text-sm text-gray-500 text-left">
                   <td className="px-2 py-2">{student.student}</td>
                   <td className="px-2 py-2">{student.parent}</td>
                   <td className="px-2 py-2">{student.grade}</td>
                   <td className="px-2 py-2">{student.phoneNumber}</td>
+                  <td className="px-2 py-2">
+                    <button onClick={() => handleEditStudent(index)} className="text-mainblue">
+                      <TbEdit className="mr-1 text-lg"/>
+                    </button>
+                    <button onClick={() => handleDeleteStudent(index)} className="text-grey-500">
+                      <AiOutlineDelete className="ml-3 text-lg"/>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
