@@ -1,3 +1,4 @@
+ feature/classes
 import Image from 'next/image'
 import Display from './Components/Display'
 
@@ -10,5 +11,12 @@ export default function Home() {
     // <Subjects/>
     // <Parents/>
   
+
+export default function Home() {
+  return (
+    <main>
+
+    </main>
+ dev
   )
 }
