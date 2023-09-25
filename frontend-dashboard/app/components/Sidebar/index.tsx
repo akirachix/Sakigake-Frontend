@@ -17,7 +17,12 @@ const Sidebar = () => {
     { name: "Parents", link: '/Parents', icon: MdOutlinePersonalInjury },
   ];
   const [open, setOpen] = useState(true);
+  const [activeLink, setActiveLink] = useState('/Dashboard'); 
   const [showPopup, setShowPopup] = useState(false);
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
 
   const handleLogout = () => {
     setShowPopup(true);
@@ -43,7 +48,10 @@ const Sidebar = () => {
         <div className="mt-4 flex flex-col gap-4 relative pt-8">
           {icons.map((icon, i) => (
             <Link href={icon.link} key={i}>
-              <div className={` ${icon.margin && "mt-0"} group flex items-center text-ml  gap-3.5 font-medium p-2 hover:bg-hoverblue rounded-md`}>
+              <div
+                className={` ${icon.margin && "mt-0"} group flex items-center text-ml  gap-3.5 font-medium p-2 ${activeLink === icon.link ? 'bg-hoverblue' : 'hover:bg-hoverblue'} rounded-md`}
+                onClick={() => handleLinkClick(icon.link)}
+              >
                 <span>{React.createElement(icon.icon, { size: "20" })}</span>
                 <h2 style={{ transitionDelay: `${i + 3}00ms` }} className={`whitespace-pre duration-500 ${!open && "opacity-10 translate-x-28 overflow-hidden"}`}>
                   {icon.name}
@@ -51,12 +59,14 @@ const Sidebar = () => {
               </div>
             </Link>
           ))}
-          <div className={`group flex items-center text-ml  gap-3.5 font-medium p-2 hover:bg-hoverblue rounded-md mt-24`} onClick={handleLogout}>
-            <span className="text-xl"><HiOutlineLogout /></span>
-            <h2 style={{ transitionDelay: `${icons.length + 3}00ms` }} className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"}`}>
-              Log Out
-            </h2>
-          </div>
+          <Link href="/Logout">
+            <div className={`group flex items-center text-ml  gap-3.5 font-medium p-2 hover:bg-hoverblue rounded-md mt-24`} onClick={handleLogout}>
+              <span className="text-xl"><HiOutlineLogout /></span>
+              <h2 style={{ transitionDelay: `${icons.length + 3}00ms` }} className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"}`}>
+                Log Out
+              </h2>
+            </div>
+          </Link>
         </div>
       </div>
       {showPopup && (
