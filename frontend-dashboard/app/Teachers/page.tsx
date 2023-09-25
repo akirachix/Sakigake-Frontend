@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { TbX } from "react-icons/tb";
 
-
 interface Teacher {
   teacher: string;
   grade: string;
@@ -75,7 +74,6 @@ const Teachers = () => {
                       }
                       required />
                   </div>
-        
                 </div>
                
                 <div className="grid grid-cols-2 gap-4 mt-5">
