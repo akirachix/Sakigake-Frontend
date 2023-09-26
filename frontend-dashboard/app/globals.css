@@ -8,7 +8,13 @@
 @tailwind components;
 @tailwind utilities;
 
+ feature/login
+body {
+    overflow-y: hidden;
+  }
+
 
 body {
     background-color: #fff;
 }
+dev
