@@ -2,8 +2,8 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import Sidebar from '../Components/Sidebar';
-import DynamicTable from '../atoms/Dynamictable/dynamictable';
-import SearchBar from '../atoms/Dynamicsearchbar/dyamicsearchbar';
+import DynamicTable from '../atoms/dynamictable/dynamictable';
+import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 
 interface Parent {
   parentName: string;
