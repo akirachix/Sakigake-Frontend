@@ -4,7 +4,7 @@ import { CgNotes } from 'react-icons/cg';
 import { PiChalkboardTeacherDuotone } from 'react-icons/pi';
 import { PiStudent } from 'react-icons/pi';
 import { RiParentLine } from 'react-icons/ri';
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../components/Sidebar";
 
 let data = [
     { icon: <SiGoogleclassroom className=" bg-bgblue rounded-full text-6xl p-2.5 text-white"/>, user: "Classes", number: "58" },

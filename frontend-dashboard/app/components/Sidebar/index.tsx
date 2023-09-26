@@ -20,7 +20,7 @@ const Sidebar = () => {
   const [activeLink, setActiveLink] = useState('/Dashboard'); 
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleLinkClick = (link) => {
+  const handleLinkClick = (link:any) => {
     setActiveLink(link);
   };
 

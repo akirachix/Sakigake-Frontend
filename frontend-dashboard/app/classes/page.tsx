@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { AiOutlineClose} from 'react-icons/ai';
-import Sidebar from '../Components/Sidebar';
+import Sidebar from '../components/Sidebar';
 import DynamicTable from '../atoms/dynamictable/dynamictable';
 import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 
