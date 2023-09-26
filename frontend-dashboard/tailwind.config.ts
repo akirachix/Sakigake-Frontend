@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      feature/home
+
       colors: { 
         textblue:'#008CBF',
         navyblue:'#303972',

@@ -1,4 +1,4 @@
- feature/home
+
 import Image from 'next/image'
 import Display from './Components/Display'
 
@@ -17,6 +17,6 @@ export default function Home() {
     <main>
 
     </main>
-    dev
+
   )
 }

@@ -16,6 +16,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
  feature/home
+ feature/home
+
+feature/login
+dev
       <body >{children}</body>
 
       <body className={inter.className + "flex"}>
@@ -23,8 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Sidebar />
           <div>{children}</div>
         </div>
+feature/home
       </body>
 dev
+
+      </body
+        dev
+      dev
     </html>
   );
 }
