@@ -8,7 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: { 
+      backgroundImage: {
+        pattern: "url('/media/background.png')",
+      },
+      colors:{
         textblue:'#008CBF',
         navyblue:'#303972',
         grey:'#E5E5E5',
@@ -25,22 +28,8 @@ const config: Config = {
         white: "#fff",
         maingrey:'#484848',
         bordercolor:'#CECECE',
-      },
-      fontFamily:{
-        baloo:[ 'Baloo Bhai 2', 'cursive' ],
-        jost:[ 'Jost' ]
-      },
-      
-      margin: {
-        '150':'150',
-      },
-      fontSize:{
-        '28px':'28px'
-      },
-      backgroundImage:{
-        pattern: "url('/media/Background.png')",
-      },
-    }, 
+      }
+    },
   },
   plugins: [],
 }

@@ -9,12 +9,12 @@ import Link from 'next/link';
 
 const Sidebar = () => {
   const icons = [
-    { name: "Dashboard", link: '/Dashboard', icon: BiSolidDashboard },
-    { name: "Classes", link: '/Classes', icon: PiHouseLineBold },
-    { name: "Subjects", link: '/Subjects', icon: CgNotes },
-    { name: "Teachers", link: '/Teachers', icon: PiChalkboardTeacher, margin: true },
-    { name: "Student", link: '/Students', icon: PiGraduationCap },
-    { name: "Parents", link: '/Parents', icon: MdOutlinePersonalInjury },
+    { name: "Dashboard", link: '/dashboard', icon: BiSolidDashboard },
+    { name: "Classes", link: '/classes', icon: PiHouseLineBold },
+    { name: "Subjects", link: '/subjects', icon: CgNotes },
+    { name: "Teachers", link: '/teachers', icon: PiChalkboardTeacher, margin: true },
+    { name: "Student", link: '/students', icon: PiGraduationCap },
+    { name: "Parents", link: '/parents', icon: MdOutlinePersonalInjury },
   ];
   const [open, setOpen] = useState(true);
   const [activeLink, setActiveLink] = useState('/Dashboard'); 
@@ -43,7 +43,7 @@ const Sidebar = () => {
           <HiMenuAlt3 size={26} className="cursor-pointer" onClick={() => setOpen(!open)} />
         </div>
         <a href="#" className="ml-20 mb-8">
-          <img src="/images/logo.svg" alt="logo" />
+          <img src="/media/mzaziconnect.svg" alt="logo" />
         </a>
         <div className="mt-4 flex flex-col gap-4 relative pt-8">
           {icons.map((icon, i) => (
@@ -59,14 +59,12 @@ const Sidebar = () => {
               </div>
             </Link>
           ))}
-          <Link href="/Logout">
-            <div className={`group flex items-center text-ml  gap-3.5 font-medium p-2 hover:bg-hoverblue rounded-md mt-24`} onClick={handleLogout}>
-              <span className="text-xl"><HiOutlineLogout /></span>
-              <h2 style={{ transitionDelay: `${icons.length + 3}00ms` }} className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"}`}>
-                Log Out
-              </h2>
-            </div>
-          </Link>
+          <div className={`group flex items-center text-ml  gap-3.5 font-medium p-2 hover:bg-hoverblue rounded-md mt-24`} onClick={handleLogout}>
+            <span className="text-xl"><HiOutlineLogout /></span>
+            <h2 style={{ transitionDelay: `${icons.length + 3}00ms` }} className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"}`}>
+              Log Out
+            </h2>
+          </div>
         </div>
       </div>
       {showPopup && (

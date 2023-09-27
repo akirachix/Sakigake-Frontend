@@ -111,10 +111,10 @@ const Signup = () => {
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="bg-pattern bg-no-repeat bg-cover">
             <div className="float-left pt-8 pl-8">
-              <img src="/images/logo.svg" alt="Logo" />
+              <img src="/media/mzaziconnect.svg" alt="Logo" />
             </div>
             <div className="text-center w-10/12 ml-12 pb-20">
-              <img src="/images/people.png" alt="Image" />
+              <img src="/media/people.png" alt="Image" />
             </div>
           </div>
           <div className="sidebar-div p-5 pt-24 text-center">

@@ -17,9 +17,6 @@ let data = [
 const Display = () => {
     return (
         <section className="flex">
-            <div className="w-1/4">
-                <Sidebar/>
-            </div>
             <div className="w-5/6">
             <div className="flex flex-col mr-10 rounded-2xl sm:flex-row mt-0  bg-bgblue rounded-0  md:mt-24 mb-10 sm:mt-0">
                 <div className="w-full sm:w-1/2 ">
