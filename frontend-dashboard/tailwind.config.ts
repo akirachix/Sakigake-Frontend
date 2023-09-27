@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         pattern: "url('/media/background.png')",
+        back:"url('/media/Background.png')",
       },
       colors:{
         textblue:'#008CBF',
