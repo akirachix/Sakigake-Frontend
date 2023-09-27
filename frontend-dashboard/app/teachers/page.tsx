@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { TbX, TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
-import DynamicTable from "../atoms/DynamicTable";
-import SearchBar from "../atoms/DynamicSearch";
+import DynamicTable from "../atoms/dynamictable/dynamictable";
+import SearchBar from "../atoms/dynamicsearchbar/dyamicsearchbar";
 
 interface Teacher {
   teacher: string;

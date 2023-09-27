@@ -30,17 +30,7 @@ const config: Config = {
         baloo:[ 'Baloo Bhai 2', 'cursive' ],
         jost:[ 'Jost' ]
       },
-      width: {
-        '248': '248px',
-        '208px':'208px',
-        '160':'160 px',
-
-      },
-      height: {
-        '42':'42',
-        '128':'128',
-        '100':'100 px'
-      },
+      
       margin: {
         '150':'150',
       },
@@ -48,7 +38,7 @@ const config: Config = {
         '28px':'28px'
       },
       backgroundImage:{
-        pattern: "url('/images/background.png')",
+        pattern: "url('/media/Background.png')",
       },
     }, 
   },

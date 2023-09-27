@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import Sidebar from '../components/Sidebar';
+import { TbX } from 'react-icons/tb'; // Assuming TbX is your close icon
 import DynamicTable from '../atoms/dynamictable/dynamictable';
 import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 
@@ -67,125 +67,100 @@ function Parents() {
   ];
 
   return (
-    <section className="flex">
-      <div className="w-1/4">
-        <Sidebar />
+    <section className="m-12">
+      <div className="flex justify-between items-center fixed p-4">
+        <h1 className="text-3xl font-bold text-mainblue">Parents</h1>
+        <button
+          className="m-14 bg-mainblue text-white py-3 px-6 text-sm font-bold rounded fixed top-0 right-0"
+          onClick={() => setShowForm(!showForm)}
+        >
+          Add Parent
+        </button>
       </div>
-      <div className="w-3/4 ml-10 mr-40 mt-20">
-        <div className="flex justify-between mb-6 text-bgblue items-end">
-          <h1 className="text-4xl font-bold">Parents</h1>
-          <button
-            className="bg-bgblue text-white font-bold py-3 px-6 rounded mt-2"
-            onClick={() => setShowForm(!showForm)}
-          >
-            Add Parent
-          </button>
-        </div>
-        <div className="mr-6">
-          <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
-        </div>
+      <div className="mb-6 pt-24">
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+      </div>
 
-        {parents.length === 0 ? (
-          <div className="flex flex-col items-center mr-10 h-1/2">
-            <img src="media/empty.png" alt="empty page" className="mb-8 w-5/12" />
-            <div className="text-center">
-              <h2 className="text-3xl text-darkgrey pb-4 font-semibold">
-                No parents at this time
-              </h2>
-              <p className="text-darkgrey text-sm">
-                Parents will appear here after you add them.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="w-1/2 h-1/2">
-            <DynamicTable
-              data={filteredParents}
-              columns={columns}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          </div>
-        )}
-
-        {showForm && (
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="fixed inset-0  bg-gray-500 opacity-50 z-40"></div>
-            <div className="bg-white w-5/6 left-52 bottom-10 sm:w-3/5 rounded-lg shadow-lg pt-28 pb-60 px-40 right-10  z-50 relative">
-              <button
-                className="absolute top-8 right-8 text-x"
-                onClick={() => setShowForm(false)}
-              >
-                <AiOutlineClose />
-              </button>
-              <h2 className="text-4xl mb-20 font-semibold text-darkgrey">
-                Add Parent
-              </h2>
-              <form onSubmit={handleFormSubmit}>
-                <div className="mb-4">
-                  <div className="flex mb-6">
-                    <div className="w-1/2 mb-6 mr-4">
-                      <label className="block text-inputgrey mb-1">
-                        Parent Name
-                      </label>
-                      <input
-                        className="border border-grey py-2 px-4 w-2/3 rounded"
-                        type="text"
-                        value={formData.parentName}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          setFormData({
-                            ...formData,
-                            parentName: e.target.value,
-                          })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className="w-1/2 mb-6">
-                      <label className="block text-inputgrey mb-1">
-                        Phone Number
-                      </label>
-                      <input
-                        className="border border-grey py-2 px-4 w-2/3 rounded"
-                        type="text"
-                        value={formData.phoneNumber}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          setFormData({
-                            ...formData,
-                            phoneNumber: e.target.value,
-                          })
-                        }
-                        required
-                      />
-                    </div>
+      {showForm && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="fixed inset-0 bg-gray-500 opacity-50 z-40"></div>
+          <div className="bg-white w-3/6 rounded-lg shadow-lg p-10 z-50 relative">
+            <button
+              className="absolute top-2 right-2 m-4 text-mainblue hover:text-maingrey"
+              onClick={() => setShowForm(false)}
+            >
+              <TbX />
+            </button>
+            <h2 className="text-2xl mb-4 font-semibold mb-10 pb-8">Add Parent</h2>
+            <form onSubmit={handleFormSubmit}>
+              <div className="mb-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-600 mb-1">Parent Name</label>
+                    <input
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.parentName}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setFormData({ ...formData, parentName: e.target.value })
+                      }
+                      required
+                    />
                   </div>
-                  <label className="block text-inputgrey mb-1">Email</label>
+
+                  <div>
+                    <label className="block text-gray-600 mb-1">Phone Number</label>
+                    <input
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.phoneNumber}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setFormData({ ...formData, phoneNumber: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-600 mb-1">Email</label>
                   <input
-                    className="border border-grey mb-16 py-2 px-4 w-1/2"
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
                     type="email"
                     value={formData.email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setFormData({
-                        ...formData,
-                        email: e.target.value,
-                      })
+                      setFormData({ ...formData, email: e.target.value })
                     }
                     required
                   />
                 </div>
-                <div className="flex justify-left">
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white py-2 px-4 rounded"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div className="flex justify-left font-bold text-sm pt-10">
+                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+                  Add Parent
+                </button>
+              </div>
+            </form>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {parents.length > 0 ? (
+        <DynamicTable
+          data={filteredParents}
+          columns={columns}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      ) : (
+        <div className="flex flex-col items-center h-full ">
+          <img src="media/empty.png" alt="empty page" className="ml-96" />
+          <div className="text-center text-maingrey ml-96">
+            <h2 className="text-2xl pb-4 font-semibold">No Parents at this time</h2>
+            <p className="">Parents will appear here after you add them.</p>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
