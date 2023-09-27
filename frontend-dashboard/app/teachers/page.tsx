@@ -150,7 +150,7 @@ const Teachers: React.FC = () => {
         />
       ) : (
         <div className="flex flex-col items-center h-full ">
-          <img src="images/empty.jpg" alt="empty page" className="ml-96" />
+          <img src="media/empty.jpg" alt="empty page" className="ml-96" />
           <div className="text-center text-maingrey ml-96">
             <h2 className="text-2xl pb-4 font-semibold">No Teacher at this time</h2>
             <p className="">Teachers will appear here after you add them.</p>

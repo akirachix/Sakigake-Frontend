@@ -138,7 +138,7 @@ function Classes() {
         />
       ) : (
         <div className="flex flex-col items-center h-full ">
-          <img src="media/empty" alt="empty page" className="ml-96" />
+          <img src="media/empty.jpg" alt="empty page" className="ml-96" />
           <div className="text-center text-maingrey ml-96">
             <h2 className="text-2xl pb-4 font-semibold">No Classes at this time</h2>
             <p className="">Classes will appear here after you add them.</p>
