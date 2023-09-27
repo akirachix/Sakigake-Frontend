@@ -65,7 +65,7 @@ const Student: React.FC = () => {
         </button>
       </div>
       <div className="mb-6 pt-24">
-        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a student ..."/>
       </div>
 
       {showForm && (
@@ -137,7 +137,7 @@ const Student: React.FC = () => {
                 <button
                   type="submit"
                   className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Add Student
+                  Submit
                 </button>
               </div>
             </form>

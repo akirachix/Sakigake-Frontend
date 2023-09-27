@@ -78,7 +78,7 @@ function Parents() {
         </button>
       </div>
       <div className="mb-6 pt-24">
-        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a parent ..."/>
       </div>
 
       {showForm && (
@@ -123,10 +123,10 @@ function Parents() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-600 mb-1">Email</label>
+                  <label className="block text-gray-600 mb-1 mt-4">Email</label>
                   <input
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="email"
+                    className="border border-gray-300 py-2 px-4 w-1/2 rounded"
+                    type="text"
                     value={formData.email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -134,10 +134,12 @@ function Parents() {
                     required
                   />
                 </div>
+
+
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Add Parent
+                  Submit
                 </button>
               </div>
             </form>

@@ -75,7 +75,7 @@ function Classes() {
         </button>
       </div>
       <div className="mb-6 pt-24">
-        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a class ..."/>
       </div>
 
       {showForm && (
@@ -92,6 +92,7 @@ function Classes() {
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
                 <div className="grid grid-cols-2 gap-4">
+                  
                   <div>
                     <label className="block text-gray-600 mb-1">Class Name</label>
                     <input
@@ -121,7 +122,7 @@ function Classes() {
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Add Class
+                  Submit
                 </button>
               </div>
             </form>

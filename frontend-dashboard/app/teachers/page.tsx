@@ -55,7 +55,7 @@ const Teachers: React.FC = () => {
         </button>
       </div>
       <div className="mb-6 pt-24">
-        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a teacher ..."/>
       </div>
 
       {showForm && (
@@ -128,7 +128,7 @@ const Teachers: React.FC = () => {
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Add Teacher
+                  Submit
                 </button>
               </div>
             </form>

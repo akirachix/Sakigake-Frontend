@@ -78,7 +78,7 @@ function Subjects() {
         </button>
       </div>
       <div className="mb-6 pt-24">
-        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a subject ..."/>
       </div>
 
       {showForm && (
@@ -121,8 +121,9 @@ function Subjects() {
                     />
                   </div>
                 </div>
+
                 <div>
-                  <label className="block text-gray-600 mb-1">Grade</label>
+                  <label className="block text-gray-600 mb-1 mt-4">Grade</label>
                   <input
                     className="border border-gray-300 py-2 px-4 w-1/2 rounded"
                     type="text"
@@ -133,11 +134,14 @@ function Subjects() {
                     required
                   />
                 </div>
-                <div className="flex justify-left">
-                  <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-                    Add Subject
-                  </button>
-                </div>
+                
+                <div className="flex justify-left font-bold text-sm pt-10">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white py-2 px-4 rounded">
+                  Submit
+                </button>
+              </div>
               </div>
             </form>
           </div>

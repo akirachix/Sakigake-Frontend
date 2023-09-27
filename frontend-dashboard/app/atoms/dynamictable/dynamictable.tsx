@@ -16,36 +16,34 @@ interface DynamicTableProps {
 
 function DynamicTable({ data, columns, onEdit, onDelete }: DynamicTableProps) {
   return (
-    <table className="w-full border border-collapse mt-20 mx-40 text-left">
+    <table className="w-full border border-collapse mt-20 mx-40">
       <thead>
-        <tr className="bg-gray-100">
+        <tr className="bg-gray-100 text-left">
           {columns.map((column) => (
-            <th key={column.key} className="px-2 py-2">
+            <th key={column.key} className="px-2 py-3">
               {column.label}
             </th>
           ))}
-          {onEdit && <th className="px-2 py-2 w-16"></th>}
-          {onDelete && <th className="px-2 py-2 w-16"></th>}
         </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
-          <tr key={index} className="border-collapse text-left text-gray-500 text-sm">
+          <tr key={index} className="border-collapse text-sm text-left">
             {columns.map((column) => (
-              <td key={column.key} className="px-2 py-2">
+              <td key={column.key} className="px-2 py-2 text-gray-500 ">
                 {item[column.key]}
               </td>
             ))}
             {onEdit && (
-              <td className="px-2 py-2">
-                <button onClick={() => onEdit(index)} className="text-bgblue">
-                  <TbEdit className="text-lg" /> 
+              <td className="">
+                <button onClick={() => onEdit(index)} className="text-bgblue text-center">
+                  <TbEdit className="text-lg ml-1" /> 
                 </button>
               </td>
             )}
             {onDelete && (
               <td className="px-2 py-2">
-                <button onClick={() => onDelete(index)} className="text-grey-500">
+                <button onClick={() => onDelete(index)} className="text-grey-500 text-center">
                   <AiOutlineDelete className="text-lg" /> 
                 </button>
               </td>
