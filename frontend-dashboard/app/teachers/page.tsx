@@ -4,29 +4,30 @@ import { TbX, TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
 import DynamicTable from "../atoms/dynamictable/dynamictable";
 import SearchBar from "../atoms/dynamicsearchbar/dyamicsearchbar";
+import Layout from "../components/Layout";
 
 interface Teacher {
-  teacher: string;
-  grade: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phoneNumber: string;
+  password: string;
 }
 
 const Teachers: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [teacher, setTeacher] = useState<Teacher[]>([]);
   const [formData, setFormData] = useState<Teacher>({
-    teacher: "",
-    grade: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    phoneNumber: "",
+    password: "",
   });
   const [searchInput, setSearchInput] = useState("");
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setTeacher([...teacher, formData]);
-    setFormData({ teacher: "", grade: "", email: "", phoneNumber: "" });
+    setFormData({ first_name: "", last_name: "", email: "", password: "" });
     setShowForm(false);
   };
 
@@ -44,6 +45,7 @@ const Teachers: React.FC = () => {
   };
 
   return (
+    <Layout>
     <section className="m-12">
       <div className="flex justify-between items-center fixed p-4">
         <h1 className="text-3xl font-bold text-mainblue">Teachers</h1>
@@ -73,26 +75,26 @@ const Teachers: React.FC = () => {
               <div className="mb-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-600 mb-1">Teacher Name</label>
+                    <label className="block text-gray-600 mb-1">First Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.teacher}
+                      value={formData.first_name}
                       onChange={(e) =>
-                        setFormData({ ...formData, teacher: e.target.value })
+                        setFormData({ ...formData, first_name: e.target.value })
                       }
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-600 mb-1">Grade</label>
+                    <label className="block text-gray-600 mb-1">Last Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.grade}
+                      value={formData.last_name}
                       onChange={(e) =>
-                        setFormData({ ...formData, grade: e.target.value })
+                        setFormData({ ...formData, last_name: e.target.value })
                       }
                       required
                     />
@@ -113,13 +115,13 @@ const Teachers: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-600 mb-1">Phone Number</label>
+                    <label className="block text-gray-600 mb-1">Password</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.phoneNumber}
+                      value={formData.password}
                       onChange={(e) =>
-                        setFormData({ ...formData, phoneNumber: e.target.value })
+                        setFormData({ ...formData, password: e.target.value })
                       }
                       required
                     />
@@ -140,10 +142,10 @@ const Teachers: React.FC = () => {
         <DynamicTable
           data={teacher}
           columns={[
-            { key: 'teacher', label: 'Teacher' },
-            { key: 'grade', label: 'Grade' },
+            { key: 'first_name', label: 'First name' },
+            { key: 'last_name', label: 'Last Name' },
             { key: 'email', label: 'Email' },
-            { key: 'phoneNumber', label: 'Phone Number' },
+            { key: 'password', label: 'Password' },
           ]}
           onEdit={handleEditTeacher}
           onDelete={handleDeleteTeacher}
@@ -158,6 +160,7 @@ const Teachers: React.FC = () => {
         </div>
       )}
     </section>
+    </Layout>
   );
 };
 

@@ -2,6 +2,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { TbEye, TbEyeOff } from "react-icons/tb";
 
+
 interface FormData {
   schoolName: string;
   phoneNumber: string;
@@ -213,7 +214,7 @@ const Signup = () => {
               {errors.confirmPassword && (
                 <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
               )}
-
+              
               <button
                 type="submit"
                 className="w-5/12 bg-mainblue hover:bg-opacity-75 text-white font-bold py-3 px-3 rounded mt-6"
@@ -224,7 +225,7 @@ const Signup = () => {
 
             <p className="text-sm pt-10">
               Already have an account?{" "}
-              <a href="#" className="text-mainblue font-bold">
+              <a href="/dashboard" className="text-mainblue font-bold">
                 Sign In
               </a>
             </p>

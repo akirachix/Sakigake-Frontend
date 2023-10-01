@@ -4,6 +4,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { TbX } from 'react-icons/tb'; // Assuming TbX is your close icon
 import DynamicTable from '../atoms/dynamictable/dynamictable';
 import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
+import Layout from '../components/Layout';
 
 interface Parent {
   parentName: string;
@@ -67,6 +68,7 @@ function Parents() {
   ];
 
   return (
+    <Layout>
     <section className="m-12">
       <div className="flex justify-between items-center fixed p-4">
         <h1 className="text-3xl font-bold text-mainblue">Parents</h1>
@@ -164,6 +166,7 @@ function Parents() {
         </div>
       )}
     </section>
+    </Layout>
   );
 }
 

@@ -4,6 +4,8 @@ import { TbX, TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
 import DynamicTable from "../atoms/dynamictable/dynamictable";
 import SearchBar from "../atoms/dynamicsearchbar/dyamicsearchbar";
+// import useGetStudent from "../hooks/useGetSignup";
+import Layout from "../components/Layout";
 
 interface Student {
   student: string;
@@ -20,6 +22,8 @@ const formFields = [
 ];
 
 const Student: React.FC = () => {
+  // const {students} = useGetStudent
+  
   const [showForm, setShowForm] = useState(false);
   const [student, setStudent] = useState<Student[]>([]);
   const [formData, setFormData] = useState<Student>({
@@ -55,6 +59,7 @@ const Student: React.FC = () => {
   );
 
   return (
+    <Layout>
     <section className="m-12">
       <div className="flex justify-between items-center fixed p-4">
         <h1 className="text-3xl font-bold text-mainblue">Students</h1>
@@ -167,6 +172,7 @@ const Student: React.FC = () => {
         </div>
       )}
     </section>
+    </Layout>
   );
 }
 

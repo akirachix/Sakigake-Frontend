@@ -42,7 +42,7 @@ function DynamicTable({ data, columns, onEdit, onDelete }: DynamicTableProps) {
               </td>
             )}
             {onDelete && (
-              <td className="px-2 py-2">
+              <td className="px-3 py-2">
                 <button onClick={() => onDelete(index)} className="text-grey-500 text-center">
                   <AiOutlineDelete className="text-lg" /> 
                 </button>
