@@ -1,48 +1,78 @@
 'use client'
-import React, { useState } from "react";
-import { TbX, TbEdit } from "react-icons/tb";
-import { AiOutlineDelete } from "react-icons/ai";
-import DynamicTable from "../atoms/dynamictable/dynamictable";
-import SearchBar from "../atoms/dynamicsearchbar/dyamicsearchbar";
-import Layout from "../components/Layout";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { TbX } from 'react-icons/tb';
+import DynamicTable from '../atoms/dynamictable/dynamictable';
+import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
+import Layout from '../components/Layout';
+import useGetTeacher from '../hooks/useGetTeacher';
 
-interface Teacher {
+interface FormData {
   first_name: string;
   last_name: string;
-  email: string;
-  password: string;
+  email_address: string;
+  phone_number: string;
+  create_password: string;
 }
 
 const Teachers: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [teacher, setTeacher] = useState<Teacher[]>([]);
-  const [formData, setFormData] = useState<Teacher>({
+  const [teachers, setTeachers] = useState<FormData[]>([]);
+  const [formData, setFormData] = useState<FormData>({
     first_name: "",
     last_name: "",
-    email: "",
-    password: "",
+    email_address: "",
+    phone_number: "",
+    create_password: "",
   });
   const [searchInput, setSearchInput] = useState("");
+  const [filteredTeachers, setFilteredTeachers] = useState<FormData[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const { teacherData, loading } = useGetTeacher();
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setTeacher([...teacher, formData]);
-    setFormData({ first_name: "", last_name: "", email: "", password: "" });
+    if (editingIndex !== null) {
+      const updatedTeachers = [...teachers];
+      updatedTeachers[editingIndex] = formData;
+      setTeachers(updatedTeachers);
+      setEditingIndex(null);
+    } else {
+      setTeachers([...teachers, formData]);
+    }
+    setFormData({ first_name: "", last_name: "", email_address: "", phone_number: "", create_password: "", });
     setShowForm(false);
   };
 
-  const handleDeleteTeacher = (index: number) => {
-    const updatedTeacherList = [...teacher];
-    updatedTeacherList.splice(index, 1);
-    setTeacher(updatedTeacherList);
-  };
-
-  const handleEditTeacher = (index: number) => {
-    const editedTeacher = teacher[index];
-    setFormData(editedTeacher);
-    handleDeleteTeacher(index);
+  const handleEdit = (index: number) => {
+    setFormData(filteredTeachers[index]);
+    setEditingIndex(index);
     setShowForm(true);
   };
+
+  const handleDelete = (index: number) => {
+    const updatedTeachers = [...teachers];
+    updatedTeachers.splice(index, 1);
+    setTeachers(updatedTeachers);
+  };
+
+  const filterTeachers = () => {
+    const filtered = teachers.filter((classItem) =>
+      classItem.first_name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setFilteredTeachers(filtered);
+  };
+
+  useEffect(() => {
+    filterTeachers();
+  }, [searchInput, teachers]);
+
+  const columns = [
+    { key: 'first_name', label: 'First Name' },
+    { key: 'last_name', label: 'Last Name' },
+    { key: 'email_address', label: 'Email' },
+    { key: 'phone_number', label: 'Phone Number' },
+    { key: 'create_password:', label: 'Password' },
+  ];
 
   return (
     <Layout>
@@ -100,28 +130,43 @@ const Teachers: React.FC = () => {
                     />
                   </div>
                 </div>
+                
 
                 <div className="grid grid-cols-2 gap-4 mt-5">
                   <div>
-                    <label className="block text-gray-600 mb-1">Email</label>
+                    <label className="block text-gray-600 mb-1">Create Password</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.email}
+                      value={formData.create_password}
                       onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
+                        setFormData({ ...formData, create_password: e.target.value })
                       }
                       required
                     />
                   </div>
+
                   <div>
-                    <label className="block text-gray-600 mb-1">Password</label>
+                    <label className="block text-gray-600 mb-1">Phone Number</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.password}
+                      value={formData.phone_number}
                       onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
+                        setFormData({ ...formData, phone_number: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-600 mb-1"></label>
+                    <input
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.phone_number}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone_number: e.target.value })
                       }
                       required
                     />
@@ -138,18 +183,13 @@ const Teachers: React.FC = () => {
         </div>
       )}
 
-      {teacher.length > 0 ? (
-        <DynamicTable
-          data={teacher}
-          columns={[
-            { key: 'first_name', label: 'First name' },
-            { key: 'last_name', label: 'Last Name' },
-            { key: 'email', label: 'Email' },
-            { key: 'password', label: 'Password' },
-          ]}
-          onEdit={handleEditTeacher}
-          onDelete={handleDeleteTeacher}
-        />
+      {teacherData.length > 0 ? (
+            <DynamicTable
+            data={teacherData}
+            columns={columns}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
       ) : (
         <div className="flex flex-col items-center h-full ">
           <img src="media/empty.jpg" alt="empty page" className="ml-96" />

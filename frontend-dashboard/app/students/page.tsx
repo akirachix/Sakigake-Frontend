@@ -1,62 +1,87 @@
 'use client'
-import React, { useState } from "react";
-import { TbX, TbEdit } from "react-icons/tb";
-import { AiOutlineDelete } from "react-icons/ai";
-import DynamicTable from "../atoms/dynamictable/dynamictable";
-import SearchBar from "../atoms/dynamicsearchbar/dyamicsearchbar";
-// import useGetStudent from "../hooks/useGetSignup";
-import Layout from "../components/Layout";
+import React, { useState, FormEvent, useEffect } from 'react';
+import { TbX } from 'react-icons/tb';
+import DynamicTable from '../atoms/dynamictable/dynamictable';
+import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
+import Layout from '../components/Layout';
+import useGetStudent from '../hooks/useGetStudent';
 
-interface Student {
-  student: string;
-  grade: string;
+interface FormData {
+  first_name: string;
+  last_name: string;
+  admission_number: string;
+  parent_phone_number: string;
+  date_added_at: string;
+  date_updated_at: string;
+  class_grade: string;
   parent: string;
-  phoneNumber: string;
 }
 
-const formFields = [
-  { label: "Student Name", name: "student" },
-  { label: "Parent/Guardian", name: "parent" },
-  { label: "Phone Number", name: "phoneNumber" },
-  { label: "Grade", name: "grade" },
-];
-
-const Student: React.FC = () => {
-  // const {students} = useGetStudent
-  
+const Student = () => { 
   const [showForm, setShowForm] = useState(false);
-  const [student, setStudent] = useState<Student[]>([]);
-  const [formData, setFormData] = useState<Student>({
-    student: "",
-    grade: "",
+  const [students, setStudents] = useState<FormData[]>([]);
+  const [formData, setFormData] = useState<FormData>({
+    first_name: "",
+    last_name: "",
+    admission_number: "",
+    parent_phone_number: "",
+    date_added_at: "",
+    date_updated_at: "",
+    class_grade: "",
     parent: "",
-    phoneNumber: "",
   });
-  const [searchInput, setSearchInput] = useState("");
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState<FormData[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const { studentData, loading } = useGetStudent();
+  
+
+  const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setStudent([...student, formData]);
-    setFormData({ student: "", grade: "", parent: "", phoneNumber: "" });
+    if (editingIndex !== null) {
+      const updatedStudents = [...students];
+      updatedStudents[editingIndex] = formData;
+      setStudents(updatedStudents);
+      setEditingIndex(null);
+    } else {
+      setStudents([...students, formData]);
+    }
+    setFormData({ first_name: "", last_name: "" , admission_number: "", parent_phone_number: "" , date_added_at: "" , date_updated_at: "" ,  class_grade: "", parent: "" });
     setShowForm(false);
   };
 
-  const handleDeleteStudent = (index: number) => {
-    const updatedStudentList = [...student];
-    updatedStudentList.splice(index, 1);
-    setStudent(updatedStudentList);
-  };
-
-  const handleEditStudent = (index: number) => {
-    const editedStudent = student[index];
-    setFormData(editedStudent);
-    handleDeleteStudent(index);
+  const handleEdit = (index: number) => {
+    setFormData(filteredStudents[index]);
+    setEditingIndex(index);
     setShowForm(true);
   };
 
-  const filteredStudents = student.filter((student) =>
-    student.student.toLowerCase().includes(searchInput.toLowerCase())
-  );
+  const handleDelete = (index: number) => {
+    const updatedStudents = [...students];
+    updatedStudents.splice(index, 1);
+    setStudents(updatedStudents);
+  };
+
+  const filterStudents = () => {
+    const filtered = students.filter((classItem) =>
+      classItem.first_name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+
+  useEffect(() => {
+    filterStudents();
+  }, [searchInput, students]);
+
+  const columns = [
+    { key: 'first_name', label: 'First Name' },
+    { key: 'last_name', label: 'Last Name' },
+    { key: 'parent', label: 'Parent' },
+    { key: 'parent_phone_number', label: 'Parent Phone Number' },
+    { key: 'class_grade', label: 'Grade' },
+  ];
 
   return (
     <Layout>
@@ -87,25 +112,25 @@ const Student: React.FC = () => {
               <div className="mb-4 text-">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-600 mb-1">Student Name</label>
+                    <label className="block text-gray-600 mb-1">First Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.student}
+                      value={formData.first_name}
                       onChange={(e) =>
-                        setFormData({ ...formData, student: e.target.value })
+                        setFormData({ ...formData, first_name: e.target.value })
                       }
                       required />
                   </div>
 
                   <div>
-                    <label className="block text-gray-600 mb-1">Parent/Guadian</label>
+                    <label className="block text-gray-600 mb-1">Second Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.parent}
+                      value={formData.last_name}
                       onChange={(e) =>
-                        setFormData({ ...formData, parent: e.target.value })
+                        setFormData({ ...formData, last_name: e.target.value })
                       }
                       required />
                   </div>
@@ -115,24 +140,36 @@ const Student: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4 mt-5">
                 
                   <div>
-                    <label className="block text-gray-600 mb-1">Phone Number</label>
+                    <label className="block text-gray-600 mb-1">Parent/Guardian</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.phoneNumber}
+                      value={formData.parent}
                       onChange={(e) =>
-                        setFormData({ ...formData, phoneNumber: e.target.value })
+                        setFormData({ ...formData, parent: e.target.value })
                       }
                       required />
                   </div>
+                  <div>
+                    <label className="block text-gray-600 mb-1">Parents Phone Nubmer</label>
+                    <input
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.parent_phone_number}
+                      onChange={(e) =>
+                        setFormData({ ...formData, parent_phone_number: e.target.value })
+                      }
+                      required />
+                  </div>
+
                   <div>
                     <label className="block text-gray-600 mb-1">Grade</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.grade}
+                      value={formData.class_grade}
                       onChange={(e) =>
-                        setFormData({ ...formData, grade: e.target.value })
+                        setFormData({ ...formData, class_grade: e.target.value })
                       }
                       required />
                   </div>
@@ -150,17 +187,12 @@ const Student: React.FC = () => {
         </div>
       )}
 
-      {filteredStudents.length > 0 ? (
-        <DynamicTable
-          data={filteredStudents}
-          columns={[
-            { key: 'student', label: 'Student' },
-            { key: 'parent', label: 'Parent' },
-            { key: 'grade', label: 'Grade' },
-            { key: 'phoneNumber', label: 'Phone Number' },
-          ]}
-          onEdit={handleEditStudent}
-          onDelete={handleDeleteStudent}
+      {studentData.length > 0 ? (
+          <DynamicTable
+          data={studentData}
+          columns={columns}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       ) : (
         <div className="flex flex-col items-center h-full ">

@@ -1,28 +1,29 @@
 'use client'
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import { AiOutlineClose } from 'react-icons/ai';
-import { TbX } from 'react-icons/tb'; // Assuming TbX is your close icon
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { TbX } from 'react-icons/tb';
 import DynamicTable from '../atoms/dynamictable/dynamictable';
 import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 import Layout from '../components/Layout';
+import useGetSubject from '../hooks/useGetSubject';
 
-interface Subject {
-  subject: string;
+interface FormData {
+  subject_name: string;
+  description: string;
   teacher: string;
-  grade: string;
 }
 
 function Subjects() {
   const [showForm, setShowForm] = useState(false);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [formData, setFormData] = useState<Subject>({
-    subject: "",
+  const [subjects, setSubjects] = useState<FormData[]>([]);
+  const [formData, setFormData] = useState<FormData>({
+    subject_name: "",
+    description: "",
     teacher: "",
-    grade: "",
   });
   const [searchInput, setSearchInput] = useState("");
-  const [filteredSubjects, setFilteredSubjects] = useState<Subject[]>([]);
+  const [filteredSubjects, setFilteredSubjects] = useState<FormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const { subjectData, loading } = useGetSubject();
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -34,7 +35,7 @@ function Subjects() {
     } else {
       setSubjects([...subjects, formData]);
     }
-    setFormData({ subject: "", teacher: "", grade: "" });
+    setFormData({ subject_name: "", description: "", teacher: "" });
     setShowForm(false);
   };
 
@@ -51,8 +52,8 @@ function Subjects() {
   };
 
   const filterSubjects = () => {
-    const filtered = subjects.filter((subject) =>
-      subject.subject.toLowerCase().includes(searchInput.toLowerCase())
+    const filtered = subjects.filter((classItem) =>
+      classItem.subject_name.toLowerCase().includes(searchInput.toLowerCase())
     );
     setFilteredSubjects(filtered);
   };
@@ -62,9 +63,9 @@ function Subjects() {
   }, [searchInput, subjects]);
 
   const columns = [
-    { key: 'subject', label: 'Subject Name' },
-    { key: 'teacher', label: 'Subject Teacher' },
-    { key: 'grade', label: 'Grade' },
+    { key: 'subject_name', label: 'Subject Name' },
+    { key: 'description', label: 'Description' },
+    { key: 'teacher', label: 'Teacher' },
   ];
 
   return (
@@ -103,22 +104,22 @@ function Subjects() {
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.subject}
+                      value={formData.subject_name}
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setFormData({ ...formData, subject: e.target.value })
+                        setFormData({ ...formData, subject_name: e.target.value })
                       }
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-600 mb-1">Subject Teacher</label>
+                    <label className="block text-gray-600 mb-1">Description</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.teacher}
+                      value={formData.description}
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setFormData({ ...formData, teacher: e.target.value })
+                        setFormData({ ...formData, description: e.target.value })
                       }
                       required
                     />
@@ -126,13 +127,13 @@ function Subjects() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-600 mb-1 mt-4">Grade</label>
+                  <label className="block text-gray-600 mb-1 mt-4">Teacher</label>
                   <input
                     className="border border-gray-300 py-2 px-4 w-1/2 rounded"
                     type="text"
-                    value={formData.grade}
+                    value={formData.teacher}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setFormData({ ...formData, grade: e.target.value })
+                      setFormData({ ...formData, teacher: e.target.value })
                     }
                     required
                   />
@@ -151,9 +152,9 @@ function Subjects() {
         </div>
       )}
 
-      {filteredSubjects.length > 0 ? (
+      {subjectData.length > 0 ? (
         <DynamicTable
-          data={filteredSubjects}
+          data={subjectData}
           columns={columns}
           onEdit={handleEdit}
           onDelete={handleDelete}
