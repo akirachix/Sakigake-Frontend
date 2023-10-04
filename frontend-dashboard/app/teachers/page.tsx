@@ -1,49 +1,104 @@
 'use client'
-import React, { useState } from "react";
-import { TbX, TbEdit } from "react-icons/tb";
-import { AiOutlineDelete } from "react-icons/ai";
-import DynamicTable from "../atoms/dynamictable/dynamictable";
-import SearchBar from "../atoms/dynamicsearchbar/dyamicsearchbar";
-
-interface Teacher {
-  teacher: string;
-  grade: string;
-  email: string;
-  phoneNumber: string;
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { TbX } from 'react-icons/tb';
+import DynamicTable from '../atoms/dynamictable/dynamictable';
+import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
+import Layout from '../components/Layout';
+import useGetTeacher from '../hooks/useGetTeacher';
+import usePostTeacher from '../hooks/usePostTeacher';
+interface Teacher{
+  first_name: string;
+  last_name: string;
+  email_address: string | null;
+  phone_number: string;
+  create_password: string | null;
+  confirm_password: string;
 }
-
 const Teachers: React.FC = () => {
+  const {teachers:initialTeachers,error:apiError} = useGetTeacher();
+  const {addTeacher,error:postError,isLoading:isPosting}=
+  usePostTeacher();
   const [showForm, setShowForm] = useState(false);
-  const [teacher, setTeacher] = useState<Teacher[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [formData, setFormData] = useState<Teacher>({
-    teacher: "",
-    grade: "",
-    email: "",
-    phoneNumber: "",
+    first_name: '',
+    last_name: '',
+    email_address: '',
+    phone_number: '',
+    create_password: '',
+    confirm_password: '',
   });
   const [searchInput, setSearchInput] = useState("");
-
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const[error, setError] = useState<string | null>(apiError || null)
+  useEffect(()=>{
+    if(apiError){
+      setError(apiError);
+    }else{
+      setTeachers(initialTeachers);
+      setError(null);
+    }
+  },[apiError,initialTeachers])
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setTeacher([...teacher, formData]);
-    setFormData({ teacher: "", grade: "", email: "", phoneNumber: "" });
-    setShowForm(false);
+    try {
+      if (
+        !formData.first_name ||
+        !formData.last_name ||
+        !formData.phone_number ||
+        !formData.create_password ||
+        formData.create_password !== formData.confirm_password
+      ){
+        throw new Error("All fields are required, and passwords must match.");
+      }
+      if (editingIndex !== null) {
+        const updatedTeachers = [...teachers];
+        updatedTeachers[editingIndex] = formData;
+        setTeachers(updatedTeachers);
+        setEditingIndex(null);
+      } else {
+        await addTeacher(formData);
+        setTeachers([...teachers, formData]);
+      }
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email_address: '',
+        phone_number: '',
+        create_password: '',
+        confirm_password: '',
+      });
+      setShowForm(false);
+    } catch (error:any) {
+      console.error('Error adding or editing teacher: ', error);
+      setError(error.message || 'Failed to add/update teacher.');
+    }
   };
-
-  const handleDeleteTeacher = (index: number) => {
-    const updatedTeacherList = [...teacher];
-    updatedTeacherList.splice(index, 1);
-    setTeacher(updatedTeacherList);
-  };
-
-  const handleEditTeacher = (index: number) => {
-    const editedTeacher = teacher[index];
+  const handleEdit = (index: number) => {
+    const editedTeacher = teachers[index];
     setFormData(editedTeacher);
-    handleDeleteTeacher(index);
+    setEditingIndex(index);
     setShowForm(true);
   };
-
+  const handleDelete = (index: number) => {
+    const updatedTeachers = [...teachers];
+    updatedTeachers.splice(index, 1);
+    setTeachers(updatedTeachers);
+  };
+  const columns = [
+    { key: 'first_name', label: 'First Name' },
+    { key: 'last_name', label: 'Last Name' },
+    { key: 'email_address', label: 'Email Address' },
+    { key: 'phone_number', label: 'Phone Number' },
+  ];
+  const filteredTeachers = teachers.filter((teacher) =>
+  teacher.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+  teacher.last_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+  teacher.email_address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+  teacher.phone_number.toLowerCase().includes(searchInput.toLowerCase())
+);
   return (
+    <Layout>
     <section className="m-12">
       <div className="flex justify-between items-center fixed p-4">
         <h1 className="text-3xl font-bold text-mainblue">Teachers</h1>
@@ -57,7 +112,6 @@ const Teachers: React.FC = () => {
       <div className="mb-6 pt-24">
         <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a teacher ..."/>
       </div>
-
       {showForm && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="fixed inset-0 bg-gray-500 opacity-50 z-40"></div>
@@ -73,92 +127,106 @@ const Teachers: React.FC = () => {
               <div className="mb-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-600 mb-1">Teacher Name</label>
+                    <label className="block text-gray-600 mb-1">First Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.teacher}
-                      onChange={(e) =>
-                        setFormData({ ...formData, teacher: e.target.value })
+                      value={formData.first_name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setFormData({ ...formData, first_name: e.target.value })
                       }
                       required
                     />
                   </div>
-
                   <div>
-                    <label className="block text-gray-600 mb-1">Grade</label>
+                    <label className="block text-gray-600 mb-1">Last Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.grade}
-                      onChange={(e) =>
-                        setFormData({ ...formData, grade: e.target.value })
+                      value={formData.last_name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setFormData({ ...formData, last_name: e.target.value })
                       }
                       required
                     />
                   </div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4 mt-5">
+                <div className='grid grid-cols-2 gap-4'>
+                <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Email</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="email"
+                    value={formData.email_address || ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, email_address: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Phone Number</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="text"
+                    value={formData.phone_number}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, phone_number: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                </div>
+                <div className='grid grid-cols-2 gap-4'>
                   <div>
-                    <label className="block text-gray-600 mb-1">Email</label>
-                    <input
-                      className="border border-gray-300 py-2 px-4 w-full rounded"
-                      type="text"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-600 mb-1">Phone Number</label>
-                    <input
-                      className="border border-gray-300 py-2 px-4 w-full rounded"
-                      type="text"
-                      value={formData.phoneNumber}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phoneNumber: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
+                  <label className="block text-gray-600 mb-1 mt-4">Password</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="text"
+                    value={formData.create_password || ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, create_password: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Confirm Password</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="text"
+                    value={formData.confirm_password || ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, confirm_password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
                 </div>
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Submit
+                  {editingIndex !== null ? 'Update' : 'Submit'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-
-      {teacher.length > 0 ? (
-        <DynamicTable
-          data={teacher}
-          columns={[
-            { key: 'teacher', label: 'Teacher' },
-            { key: 'grade', label: 'Grade' },
-            { key: 'email', label: 'Email' },
-            { key: 'phoneNumber', label: 'Phone Number' },
-          ]}
-          onEdit={handleEditTeacher}
-          onDelete={handleDeleteTeacher}
-        />
-      ) : (
-        <div className="flex flex-col items-center h-full ">
-          <img src="media/empty.jpg" alt="empty page" className="ml-96" />
-          <div className="text-center text-maingrey ml-96">
-            <h2 className="text-2xl pb-4 font-semibold">No Teacher at this time</h2>
-            <p className="">Teachers will appear here after you add them.</p>
-          </div>
-        </div>
-      )}
+       {filteredTeachers.length > 0 ? (
+          <DynamicTable
+          data={filteredTeachers}
+          columns={columns}
+          />
+        ):(
+    <div className="flex flex-col items-center h-full">
+      <img src="media/empty.jpg" alt="empty page" className="ml-96" />
+      <div className="text-center text-maingrey ml-96">
+       <h2 className="text-2xl pb-4 font-semibold">No Teacher at this time</h2>
+       <p className="">Teacher will appear here after you add them.</p>
+      </div>
+    </div>
+)}
     </section>
+    </Layout>
   );
 };
-
 export default Teachers;
