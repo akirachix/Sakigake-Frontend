@@ -1,7 +1,6 @@
 import { addSubject } from "../utilities/utils";
 export type SubjectData = {
   subject_name: string;
-  description: string;
   teacher:  string;
 };
 const usePostSubject = () => {

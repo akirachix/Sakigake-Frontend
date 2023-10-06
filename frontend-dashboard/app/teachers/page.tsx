@@ -43,14 +43,25 @@ const Teachers: React.FC = () => {
     e.preventDefault();
     try {
       if (
+        teachers.some(
+          (teacher) =>
+            teacher.email_address?.toLowerCase() === formData.email_address?.toLowerCase() ||
+            teacher.phone_number.toLowerCase() === formData.phone_number.toLowerCase()
+        )
+      ) {
+        throw new Error("This teacher already exists.");
+      }
+  
+      if (
         !formData.first_name ||
         !formData.last_name ||
         !formData.phone_number ||
         !formData.create_password ||
         formData.create_password !== formData.confirm_password
-      ){
+      ) {
         throw new Error("All fields are required, and passwords must match.");
       }
+  
       if (editingIndex !== null) {
         const updatedTeachers = [...teachers];
         updatedTeachers[editingIndex] = formData;
@@ -60,6 +71,7 @@ const Teachers: React.FC = () => {
         await addTeacher(formData);
         setTeachers([...teachers, formData]);
       }
+  
       setFormData({
         first_name: '',
         last_name: '',
@@ -69,22 +81,14 @@ const Teachers: React.FC = () => {
         confirm_password: '',
       });
       setShowForm(false);
+      setError(null); 
     } catch (error:any) {
       console.error('Error adding or editing teacher: ', error);
       setError(error.message || 'Failed to add/update teacher.');
     }
   };
-  const handleEdit = (index: number) => {
-    const editedTeacher = teachers[index];
-    setFormData(editedTeacher);
-    setEditingIndex(index);
-    setShowForm(true);
-  };
-  const handleDelete = (index: number) => {
-    const updatedTeachers = [...teachers];
-    updatedTeachers.splice(index, 1);
-    setTeachers(updatedTeachers);
-  };
+  
+
   const columns = [
     { key: 'first_name', label: 'First Name' },
     { key: 'last_name', label: 'Last Name' },

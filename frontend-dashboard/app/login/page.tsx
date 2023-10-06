@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from "react";
 import usePostLogin from "../hooks/usePostLogin";
+import Link from 'next/link';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -65,6 +66,7 @@ const Login: React.FC = () => {
               />
             </div>
 
+            <Link href="/dashboard">
             <button
               className="bg-blue-500 text-white text-sm font-bold px-28 py-4 mb-4 mb-10 rounded" 
               type="submit"
@@ -72,11 +74,14 @@ const Login: React.FC = () => {
             >
               {isLoading ? "Logging in..." : "Login"}
             </button>
+            </Link>
           </form>
           {error && <p className="error-message">{error}</p>}
+          <Link href="/signup">
           <p className="text-gray-600 text-sm pt-8">
             Already have an account? <b className="text-blue-500">Sign up</b>
           </p>
+          </Link>
         </div>
       </div>
     </>

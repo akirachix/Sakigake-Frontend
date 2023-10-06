@@ -9,7 +9,6 @@ import usePostSubject from "../hooks/usePostSubject";
 import Layout from "../components/Layout";
 interface Subject {
   subject_name: string;
-  description: string;
   teacher: string;
 }
 const SubjectsPage: React.FC = () => {
@@ -20,7 +19,6 @@ const SubjectsPage: React.FC = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [formData, setFormData] = useState<Subject>({
     subject_name: "",
-    description: "",
     teacher: "",
   });
   const [searchInput, setSearchInput] = useState("");
@@ -58,7 +56,6 @@ const SubjectsPage: React.FC = () => {
         setSubjects([...subjects, formData]);
         setFormData({
           subject_name: "",
-          description: "",
           teacher: "",
         });
         setShowForm(false);
@@ -72,7 +69,7 @@ const SubjectsPage: React.FC = () => {
     }
   };
   const filteredSubjects = subjects.filter((subject) =>
-    subject.subject_name.toLowerCase() && subject.description.toLowerCase().includes(searchInput.toLowerCase())
+    subject.subject_name.toLowerCase().includes(searchInput.toLowerCase())
   );
   return (
     <Layout>
@@ -117,20 +114,7 @@ const SubjectsPage: React.FC = () => {
                     required
                   />
                 </div>
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="first_name">
-                    Description
-                  </label>
-                  <input
-                    id="description"
-                    name="description"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    required
-                  />
-                </div>
+                
               </div>
                 <div className="mb-4">
                   <label className="block text-gray-600 mb-1" htmlFor="parent">
@@ -161,8 +145,8 @@ const SubjectsPage: React.FC = () => {
          }))}
          columns={[
            { key: 'subject_name', label: 'Subject Name' },
-           { key: 'description', label: 'Description' },
-           { key: 'teacher', label: 'Teacher' },
+           { key: 'description', label: 'Teachr' },
+          
          ]}
        />
         ) : (

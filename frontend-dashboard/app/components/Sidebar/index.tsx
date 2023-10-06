@@ -10,10 +10,10 @@ import Link from 'next/link';
 const Sidebar = () => {
   const icons = [
     { name: "Dashboard", link: '/dashboard', icon: BiSolidDashboard },
-    { name: "Classes", link: '/classes', icon: PiHouseLineBold },
+    { name: "Classes", link: '/classes', icon: CgNotes },
     { name: "Subjects", link: '/subjects', icon: CgNotes },
     { name: "Teachers", link: '/teachers', icon: PiChalkboardTeacher, margin: true },
-    { name: "Student", link: '/students', icon: PiGraduationCap },
+    { name: "Students", link: '/students', icon: PiGraduationCap },
     { name: "Parents", link: '/parents', icon: MdOutlinePersonalInjury },
   ];
   const [open, setOpen] = useState(true);
@@ -33,7 +33,7 @@ const Sidebar = () => {
   };
 
   const handleContinue = () => {
-    // i will add when we know after logging out what happens
+    
   };
 
   return (

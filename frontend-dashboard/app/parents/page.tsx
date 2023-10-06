@@ -1,5 +1,4 @@
 
-
 'use client'
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { TbX } from 'react-icons/tb';
@@ -48,6 +47,17 @@ function Parents() {
     e.preventDefault();
     try {
       if (
+        parents.some(
+          (parent) =>
+            parent.email_address?.toLowerCase() === formData.email_address?.toLowerCase() ||
+            parent.phone_number.toLowerCase() === formData.phone_number.toLowerCase()
+        )
+      ) {
+        throw new Error("This parent already exists.");
+      }
+      
+  
+      if (
         !formData.first_name ||
         !formData.last_name ||
         !formData.phone_number ||
@@ -56,18 +66,17 @@ function Parents() {
       ) {
         throw new Error("All fields are required, and passwords must match.");
       }
-
+  
       if (editingIndex !== null) {
         const updatedParents = [...parents];
         updatedParents[editingIndex] = formData;
         setParents(updatedParents);
         setEditingIndex(null);
-
       } else {
         await addParent(formData);
         setParents([...parents, formData]);
       }
-
+  
       setFormData({
         first_name: '',
         last_name: '',
@@ -77,11 +86,13 @@ function Parents() {
         confirm_password: '',
       });
       setShowForm(false);
+      setError(null); 
     } catch (error:any) {
-      console.error('Error adding/updating parent: ', error);
-      setError(error.message || 'Failed to add/update parent.');
-    }
-  };
+
+      alert(error.message)
+  }
+}
+  
 
 
 
@@ -114,6 +125,7 @@ function Parents() {
         <div className="mb-6 pt-24">
           <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a parent ..." />
         </div>
+  
        {showForm && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="fixed inset-0 bg-gray-500 opacity-50 z-40"></div>
@@ -154,7 +166,7 @@ function Parents() {
                       required
                     />
                   </div>
-                </div>
+                
                 <div>
                   <label className="block text-gray-600 mb-1 mt-4">Email</label>
                   <input
@@ -200,6 +212,7 @@ function Parents() {
                     }
                     required
                   />
+                </div>
                 </div>
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">

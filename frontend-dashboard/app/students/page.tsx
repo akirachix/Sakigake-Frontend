@@ -94,7 +94,7 @@ const StudentsPage: React.FC = () => {
   };
 
   const filteredStudents = students.filter((student) =>
-   student.first_name.toLowerCase().includes(searchInput.toLowerCase())
+    student.first_name.toLowerCase().includes(searchInput.toLowerCase())
   );
 
   return (
@@ -127,94 +127,102 @@ const StudentsPage: React.FC = () => {
               </button>
               <h2 className="text-2xl mb-4 font-semibold mb-10 pb-8">Add Student</h2>
               <form onSubmit={handleFormSubmit}>
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="first_name">
-                    First Name
-                  </label>
-                  <input
-                    id="first_name"
-                    name="first_name"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.first_name}
-                    onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                    required
-                  />
-                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="mb-4">
+                    <label className="block text-gray-600 mb-1" htmlFor="first_name">
+                      First Name
+                    </label>
+                    <input
+                      id="first_name"
+                      name="first_name"
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.first_name}
+                      onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                      required
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="last_name">
-                    Last Name
-                  </label>
-                  <input
-                    id="last_name"
-                    name="last_name"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.last_name}
-                    onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                    required
-                  />
-                </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-600 mb-1" htmlFor="last_name">
+                      Last Name
+                    </label>
+                    <input
+                      id="last_name"
+                      name="last_name"
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.last_name}
+                      onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                      required
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="admission_number">
-                    Admission Number
-                  </label>
-                  <input
-                    id="admission_number"
-                    name="admission_number"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.admission_number}
-                    onChange={(e) => setFormData({ ...formData, admission_number: e.target.value })}
-                    required
-                  />
-                </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-600 mb-1" htmlFor="admission_number">
+                      Admission Number
+                    </label>
+                    <input
+                      id="admission_number"
+                      name="admission_number"
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.admission_number}
+                      onChange={(e) => setFormData({ ...formData, admission_number: e.target.value })}
+                      required
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="parent_phone_number">
-                    Parent Phone Number
-                  </label>
-                  <input
-                    id="parent_phone_number"
-                    name="parent_phone_number"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.parent_phone_number}
-                    onChange={(e) => setFormData({ ...formData, parent_phone_number: e.target.value })}
-                    required
-                  />
-                </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-600 mb-1" htmlFor="parent_phone_number">
+                      Parent Phone Number
+                    </label>
+                    <input
+                      id="parent_phone_number"
+                      name="parent_phone_number"
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.parent_phone_number}
+                      onChange={(e) => setFormData({ ...formData, parent_phone_number: e.target.value })}
+                      required
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="class_grade">
-                    Class Grade
-                  </label>
-                  <input
-                    id="class_grade"
-                    name="class_grade"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.class_grade}
-                    onChange={(e) => setFormData({ ...formData, class_grade: e.target.value })}
-                    required
-                  />
-                </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-600 mb-1" htmlFor="class_grade">
+                      Class Grade
+                    </label>
+                    <input
+                      id="class_grade"
+                      name="class_grade"
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      type="text"
+                      value={formData.class_grade}
+                      onChange={(e) => setFormData({ ...formData, class_grade: e.target.value })}
+                      required
+                    />
+                  </div>
 
-                <div className="mb-4">
-                  <label className="block text-gray-600 mb-1" htmlFor="parent">
-                    Parent ID
-                  </label>
-                  <input
-                    id="parent"
-                    name="parent"
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.parent}
-                    onChange={(e) => setFormData({ ...formData, parent: e.target.value })}
-                    required
-                  />
+                  <div className="mb-4">
+                    <label className="block text-gray-600 mb-1" htmlFor="parent">
+                      Parent
+                    </label>
+                    <select
+                      id="parent"
+                      name="parent"
+                      className="border border-gray-300 py-2 px-4 w-full rounded"
+                      value={formData.parent}
+                      onChange={(e) => setFormData({ ...formData, parent: e.target.value })}
+                      required
+                    >
+                      <option value="">Select a parent</option>
+                      {parents.map((parent) => (
+                        <option key={parent.id} value={parent.id}>
+                          {`${parent.first_name} ${parent.last_name}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
@@ -233,10 +241,10 @@ const StudentsPage: React.FC = () => {
               { key: 'first_name', label: 'First Name' },
               { key: 'last_name', label: 'Last Name' },
               { key: 'admission_number', label: 'Admission Number' },
-              {key: 'parent', label: 'Parent Name'},
+              { key: 'parent', label: 'Parent Name' },
               { key: 'class_grade', label: 'Grade' },
             ]}
-            
+
           />
         ) : (
           <div className="flex flex-col items-center h-full">

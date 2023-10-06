@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { TbEye, TbEyeOff } from "react-icons/tb";
-
+import { createUser } from "../utilities/utils";
 interface FormData {
   schoolName: string;
   phoneNumber: string;
@@ -9,7 +9,6 @@ interface FormData {
   password: string;
   confirmPassword: string;
 }
-
 const Signup = () => {
   const [formData, setFormData] = useState<FormData>({
     schoolName: "",
@@ -18,7 +17,6 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
-
   const [errors, setErrors] = useState<{
     schoolName?: string;
     phoneNumber?: string;
@@ -26,10 +24,9 @@ const Signup = () => {
     password?: string;
     confirmPassword?: string;
   }>({});
-
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData({
@@ -37,14 +34,12 @@ const Signup = () => {
       [id]: value,
     });
   };
-
   const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setFormData({
       ...formData,
       confirmPassword: value,
     });
-
     if (value !== formData.password) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -57,8 +52,7 @@ const Signup = () => {
       }));
     }
   };
-
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const newErrors = {} as {
       schoolName?: string;
@@ -67,44 +61,46 @@ const Signup = () => {
       password?: string;
       confirmPassword?: string;
     };
-
-    if (formData.schoolName.trim() === "") {
-      newErrors.schoolName = "School Name is required.";
-    }
-
-    if (formData.phoneNumber.trim() === "") {
-      newErrors.phoneNumber = "Phone Number is required.";
-    }
-
-    if (formData.email.trim() === "") {
-      newErrors.email = "Email Address is required.";
-    }
-
     if (formData.password.trim() === "") {
       newErrors.password = "Password is required.";
     }
-
     if (formData.confirmPassword.trim() === "") {
       newErrors.confirmPassword = "Confirm Password is required.";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
-
     setErrors(newErrors);
-
     if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted:", formData);
+      try {
+        const response = { status: 201 };
+        if (response) {
+          const response = createUser({
+            school_name: formData.schoolName,
+            phonenumber: formData.phoneNumber,
+            email_address: formData.email,
+            create_password: formData.password,
+            confirm_password: formData.confirmPassword,
+          });
+          // Show a pop-up for successful registration
+          setShowSuccessMessage(true);
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+          }, 3000);
+          window.location.href = "/login";
+        } else {
+          console.error('Response:', response);
+        }
+      } catch (error) {
+        console.error('Error during user registration:', error);
+      }
     }
   };
-
   const handleTogglePasswordVisibility1 = () => {
     setShowPassword1(!showPassword1);
   };
-
   const handleTogglePasswordVisibility2 = () => {
     setShowPassword2(!showPassword2);
   };
-
   return (
     <>
       <div>
@@ -113,7 +109,7 @@ const Signup = () => {
             <div className="float-left pt-8 pl-8">
               <img src="/media/mzaziconnect.svg" alt="Logo" />
             </div>
-            <div className="text-center w-10/12 ml-12 pb-20">
+            <div className="text-center w-10/12 ml-12 pb-[6.5em]">
               <img src="/media/people.png" alt="Image" />
             </div>
           </div>
@@ -124,7 +120,6 @@ const Signup = () => {
             <p className="text-gray-700 text-sm pb-6">
               It is our great pleasure to have you on board!
             </p>
-
             <form onSubmit={handleSubmit} className="mt-5">
               <div className="mb-4 flex justify-center">
                 <input
@@ -137,7 +132,6 @@ const Signup = () => {
                   required
                 />
               </div>
-
               <div className="mb-4 flex justify-center">
                 <input
                   type="tel"
@@ -149,7 +143,6 @@ const Signup = () => {
                   required
                 />
               </div>
-
               <div className="mb-4 flex justify-center">
                 <input
                   type="email"
@@ -161,7 +154,6 @@ const Signup = () => {
                   required
                 />
               </div>
-
               <div className="mb-4 flex justify-center">
                 <input
                   type={showPassword1 ? "text" : "password"}
@@ -179,7 +171,6 @@ const Signup = () => {
                   {showPassword1 ? <TbEye /> : <TbEyeOff />}
                 </span>
               </div>
-
               <div className="mb-4 flex justify-center">
                 <input
                   type={showPassword2 ? "text" : "password"}
@@ -197,7 +188,6 @@ const Signup = () => {
                   {showPassword2 ? <TbEye /> : <TbEyeOff />}
                 </span>
               </div>
-
               {errors.schoolName && (
                 <p className="text-red-500 text-xs">{errors.schoolName}</p>
               )}
@@ -213,19 +203,26 @@ const Signup = () => {
               {errors.confirmPassword && (
                 <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
               )}
-
-              <button
-                type="submit"
-                className="w-5/12 bg-mainblue hover:bg-opacity-75 text-white font-bold py-3 px-3 rounded mt-6"
-              >
-                Create Account
-              </button>
+              <button type="submit"
+                  className="w-5/12 bg-mainblue hover:bg-opacity-75 text-white font-bold py-3 px-3 rounded mt-6"
+                  onClick={handleSubmit} >Create Account</button>
             </form>
-
-            <p className="text-sm pt-10">
+          {showSuccessMessage && (
+           <div className="success-modal fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+           <div className="bg-white p-5 rounded shadow-lg">
+           <div className="flex justify-center mb-3">
+               <img src="media/tick.png" alt="tick" className="w-8" />
+           </div>
+             <div className="text-green-700 font-bold mb-2">
+               Successfully registered!
+             </div>
+           </div>
+         </div>
+        )}
+            <p className="g-mainblue text-sm pt-10">
               Already have an account?{" "}
-              <a href="#" className="text-mainblue font-bold">
-                Sign In
+              <a href="/login" className="text-mainblue font-bold">
+                Log In
               </a>
             </p>
           </div>
@@ -234,5 +231,4 @@ const Signup = () => {
     </>
   );
 };
-
 export default Signup;
