@@ -21,6 +21,3 @@ export async function GET(){
         })
     }
 }
- 
- 
-// const response= await fetch ('https://sakigake-backend-ecc1b0d1bf4d.herokuapp.com/subjects/subjectsList/')

@@ -1,8 +1,8 @@
+import { BASE_URL } from "@/config";
+import { StudentData } from "../hooks/usePostStudent";
+import { SubjectData } from "../hooks/usePostSubject";
 
-
-// ------------------  For getting main user
-
-interface UsersData {
+interface FormData {
   school_name: string;
   email_address: string;
   phonenumber: string;
@@ -10,25 +10,26 @@ interface UsersData {
   confirm_password: string;
 }
 
-export const createUser = async (userData: UsersData) => {
-  const url = `/api/create-user`;
+export const registerUser = async (formData: FormData) => {
+  const url = `${BASE_URL}/account/schools/signup/registered`;
   try {
+    console.log('Request payload:', JSON.stringify(formData)); 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(formData),
     });
     const result = await response.json();
-    return result;
+    console.log('Response:', result); 
   } catch (error: any) {
+    console.error('Error:', error.message);
     throw new Error(error.message);
   }
 };
 
 
-//------------------ For getting our classes
 
 export interface ClassData{
   grade_name: string;
@@ -46,107 +47,117 @@ export const getClass= async()=>{
   }
 }
 
-// -------------- For posting classes
 
-export interface PostClassData {
-  grade_name: string;
-  class_teacher: string;
+export const getSubject= async()=>{
+  const url = `${BASE_URL}/subjects/subjectsList/`;
+  try{
+      const response = await fetch(url);
+      const result = await response.json();
+      return result
+  }
+  catch(error:any){
+      return error.message
+  }
 }
 
-export const postClass = async (classData: PostClassData) => {
-  const url = '/api/add-class';
+export const addSubject = async (subjectData: SubjectData): Promise<any> => {
+  const url = '/api/add-subject';
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(subjectData),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to add subject");
+    }
+    const result = await response.json();
+    return result;
+  } catch (error: any) {
+    throw new Error("Failed to add subject: " + error.message);
+  }
+};
+
+
+
+
+export const getTeacher= async()=>{
+  const url = `${BASE_URL}/account/schools/2/teachers/signup/`;
+  try{
+      const response = await fetch(url);
+      const result = await response.json();
+      return result
+  }
+  catch(error:any){
+      return error.message
+  }
+}
+
+
+
+export const postTeacher = async (TeacherData:any) => {
+  const url = '/api/add-teacher';
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(classData),
+      body: JSON.stringify(TeacherData),
     });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to add teacher");
+    }
+  } catch (error:any) {
+    throw new Error(error.message || "Failed to add teacher");
+  }
+}
 
+
+
+export const getStudent= async()=>{
+  const url = `${BASE_URL}/students/students/`;
+  try{
+      const response = await fetch(url);
+      const result = await response.json();
+      return result
+  }
+  catch(error:any){
+      return error.message
+  }
+}
+
+
+export const addStudent = async (studentData: StudentData): Promise<any> => {
+  const url = '/api/add-student';
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(studentData),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to add student");
+    }
     const result = await response.json();
     return result;
   } catch (error: any) {
-    throw new Error('Failed to post class: ' + error.message);
+    throw new Error("Failed to add student: " + error.message);
   }
 };
 
 
 
-// ----------------- For getting subjects
-
-export interface SubjectData{
-  subject_name: string;
-  description: string;
-  teacher: string;
-}
-export const getSubject= async()=>{
-  const url = '/api/get-subject';
-  try{
-      const response = await fetch(url);
-      const result = await response.json();
-      return result
-  }
-  catch(error:any){
-      return error.message
-  }
-}
-
-
-// --------------- For getting teachers
-
-export interface TeacherData{
-  subject_name: string;
-  description: string;
-  teacher: string;
-}
-export const getTeacher= async()=>{
-  const url = '/api/get-teacher';
-  try{
-      const response = await fetch(url);
-      const result = await response.json();
-      return result
-  }
-  catch(error:any){
-      return error.message
-  }
-}
-
-
-// --------------- For getting students
-
-export interface StudentData{
-  first_name: string;
-  last_name: string;
-  parent_phone_number: string;
-  class_grade: string;
-  parent: string;
-
-}
-export const getStudent= async()=>{
-  const url = '/api/get-student';
-  try{
-      const response = await fetch(url);
-      const result = await response.json();
-      return result
-  }
-  catch(error:any){
-      return error.message
-  }
-}
-
-// --------------- For getting parents
-
-export interface ParentData{
-  first_name: string;
-  last_name: string;
-  email_address: string;
-  phone_number: string;
-  create_password: string;
-
-}
 export const getParent= async()=>{
-  const url = '/api/get-parent';
+  const url = `${BASE_URL}/account/schools/1/parents/register/`;
   try{
       const response = await fetch(url);
       const result = await response.json();
@@ -157,4 +168,27 @@ export const getParent= async()=>{
   }
 }
 
+
+export async function postParent(parentData: any) {
+  const url = '/api/add-parent';
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parentData),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to add parent");
+    }
+  } catch (error:any) {
+    throw new Error(error.message || "Failed to add parent");
+  }
+}
+export type { SubjectData, StudentData };
 

@@ -7,18 +7,23 @@ export async function POST(request: Request) {
         statusText: "Failed",
       });
     }
-    const requestData = await request.json();
-    const result = await fetch('https://sakigake-backend-ecc1b0d1bf4d.herokuapp.com/account/schools/1/parents/register/', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
+    const posts = await request.json().then(async (response) => {
+      const result = await fetch(
+        `${BASE_URL}/account/schools/1/parents/register/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(response),
+        }
+      );
+      const post = await result.json();
+      return post;
     });
-    const responseBody = await result.json();
-    return new Response(JSON.stringify(responseBody), {
-      status: result.ok ? 201 : result.status,
-      statusText: result.ok ? "Success" : "Failed",
+    return new Response(JSON.stringify(posts), {
+      status: 201,
+      statusText: "Success",
     });
   } catch (error: any) {
     return new Response(error.message, {

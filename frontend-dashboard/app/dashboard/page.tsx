@@ -8,15 +8,14 @@ import { RiParentLine } from 'react-icons/ri';
 import Layout from "../components/Layout";
 import { getSubject, SubjectData } from "../utilities/utils";
 import { getClass, ClassData } from "../utilities/utils";
-import { getTeacher, TeacherData } from "../utilities/utils";
+import { getTeacher } from "../utilities/utils";
 import { getStudent, StudentData } from "../utilities/utils";
-import { getParent, ParentData } from "../utilities/utils";
+import { getParent } from "../utilities/utils";
+import Image from "next/image";
 
 
 
 const Display = () => {
-
-    // ---------------- For getting dashboard sujects
 
     const [subjectCount, setSubjectCount] = useState<number>(0);
    
@@ -75,7 +74,7 @@ const Display = () => {
     useEffect(() => {
         const fetchTeachers = async () => {
             try {
-                const teacherData: TeacherData[] = await getTeacher();
+                const teacherData: any[] = await getTeacher();
                 setTeacherCount(teacherData.length);
             } catch (error) {
                 console.error("Error fetching teacher: ", error);
@@ -92,7 +91,7 @@ const Display = () => {
        useEffect(() => {
            const fetchParents = async () => {
                try {
-                   const parentData: ParentData[] = await getParent();
+                   const parentData: any[] = await getParent();
                    setParentCount(parentData.length);
                } catch (error) {
                    console.error("Error fetching parent: ", error);
@@ -119,25 +118,23 @@ const Display = () => {
 
         <section className="flex ml-14">
             <div >
-            <div className="flex flex-col mr-10 rounded-2xl sm:flex-row mt-0  bg-bgblue rounded-0  md:mt-24 mb-10 sm:mt-0">
-                <div className="w-full sm:w-3/6 ">
-                    <h1 className="text-white p-8 leading-relaxed text-3xl font-bold ">Welcome to Utawala Primary <br /> School Dashboard</h1>
+            <div className="flex flex-col rounded-2xl sm:flex-row mt-0  bg-bgblue rounded-0 mt-40">
+                <div className="w-full sm:w-3/6">
+                    <h1 className="text-white p-10 leading-relaxed text-4xl font-bold ">Welcome to Utawala Primary <br /> School Dashboard</h1>
                     <p className="text-lightblue text-large px-8 -mt-4 ">Track your school activities in one place</p>
                 </div>
                 <div className="w-1/2 sm:w-full md:w-1/2 md:float-right">
-                    <img className="h-200 w-full sm:ml-0 md:ml-0 " src="media/dashboard.png" alt="" />
+                    < img className="w-full sm:ml-0 md:ml-0 rounded-tr-2xl rounded-br-2xl" src="media/dashboard.png" alt="" />
                 </div>
             </div>
-            <div className="pt-8 ">
-                <input className="border border-grey py-2 px-4 sm:py-4 w-full md:w-1/2" type="text" placeholder=" Search for class/teacher/student..." />
-            </div>
-            <div className="flex flex-col py-16 sm:flex-row md:gap-4">
+
+            <div className="flex flex-col py-20 sm:flex-row md:gap-5">
                 {data.map((item, index) => (
-                    <div className="text-2xl px-5 sm:py-4 gap-10 flex bg-grey" key={index} >
+                    <div className="text-2xl px-8 sm:py-4 gap-16 flex bg-grey" key={index} >
                         {item.icon}
-                        <div>
-                            <h2 className="text-textgrey text-xl">{item.user}</h2> <br />
-                            <p className="font-extrabold  md:text-3xl text-navyblue">{item.number}</p>
+                        <div className="">
+                            <h2 className="text-textgrey text-xl ml-5">{item.user}</h2> <br />
+                            <p className="font-extrabold  md:text-3xl text-navyblue ml-5">{item.number}</p>
                         </div>
                     </div>
                 ))}

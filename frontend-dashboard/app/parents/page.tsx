@@ -4,49 +4,105 @@ import { TbX } from 'react-icons/tb';
 import DynamicTable from '../atoms/dynamictable/dynamictable';
 import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 import Layout from '../components/Layout';
-import useGetParent from '../hooks/useGetParent';
+import useGetParents from '../hooks/useGetParents';
+import usePostParent from '../hooks/usePostParent';
 
-
-interface FormData {
+interface Parent {
   first_name: string;
   last_name: string;
   email_address: string | null;
   phone_number: string;
   create_password: string | null;
+  confirm_password: string;
 }
+
 function Parents() {
+  const { parents: initialParents, error: apiError } = useGetParents();
+  const { addParent, error: postError, isLoading: isPosting } = usePostParent();
   const [showForm, setShowForm] = useState(false);
-  const [parents, setParents] = useState<FormData[]>([]);
-  const [formData, setFormData] = useState<FormData>({
+  const [parents, setParents] = useState<Parent[]>(initialParents);
+  const [formData, setFormData] = useState<Parent>({
     first_name: '',
     last_name: '',
     email_address: '',
     phone_number: '',
     create_password: '',
+    confirm_password: '',
   });
-
-  const [searchInput, setSearchInput] = useState("");
-  const [filteredParent, setFilteredParents] = useState<FormData[]>([]);
+  const [searchInput, setSearchInput] = useState('');
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const { parentData, loading } = useGetParent();
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(apiError || null);
 
-
-  const handleFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (editingIndex !== null) {
-      const updatedParents = [...parents];
-      updatedParents[editingIndex] = formData;
-      setParents(updatedParents);
-      setEditingIndex(null);
+  useEffect(() => {
+    if (apiError) {
+      setError(apiError);
     } else {
-      setParents([...parents, formData]);
+      setParents(initialParents);
+      setError(null);
     }
-    setFormData({ first_name: "", last_name: "", email_address: "" , phone_number:"", create_password:""});
-    setShowForm(false);
+  }, [apiError, initialParents]);
+
+  const handleFormSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      if (
+        !formData.first_name ||
+        !formData.last_name ||
+        !formData.phone_number ||
+        !formData.create_password ||
+        formData.create_password !== formData.confirm_password
+      ) {
+        throw new Error("All fields are required, and passwords must match.");
+      }
+
+      const emailExists = parents.some((parent) => parent.email_address === formData.email_address);
+
+      const phoneExists = parents.some((parent) => parent.phone_number === formData.phone_number);
+
+      if (emailExists) {
+        setEmailError('Email already exists. Please use a different email.');
+        throw new Error('Email already exists. Please use a different email.');
+      } else {
+        setEmailError(null);
+      }
+
+      if (phoneExists) {
+        setPhoneError('Phone number already exists. Please use a different phone number.');
+        throw new Error('Phone number already exists. Please use a different phone number.');
+      } else {
+        setPhoneError(null);
+      }
+
+      if (editingIndex !== null) {
+        const updatedParents = [...parents];
+        updatedParents[editingIndex] = formData;
+        setParents(updatedParents);
+        setEditingIndex(null);
+      } else {
+        await addParent(formData);
+        setParents([...parents, formData]);
+      }
+
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email_address: '',
+        phone_number: '',
+        create_password: '',
+        confirm_password: '',
+      });
+      setShowForm(false);
+    } catch (error: any) {
+      console.error('Error adding/updating parent: ', error);
+      setError(error.message || 'Failed to add/update parent.');
+    }
   };
-  
+
   const handleEdit = (index: number) => {
-    setFormData(filteredParent[index]);
+    const editedParent = parents[index];
+    setFormData(editedParent);
     setEditingIndex(index);
     setShowForm(true);
   };
@@ -57,17 +113,6 @@ function Parents() {
     setParents(updatedParents);
   };
 
-  const filteredParents = () => {
-    const filtered = parents.filter((classItem) =>
-      classItem.first_name.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    setFilteredParents(filtered);
-  };
-
-  useEffect(() => {
-    filteredParents();
-  }, [searchInput, parents]);
-
   const columns = [
     { key: 'first_name', label: 'First Name' },
     { key: 'last_name', label: 'Last Name' },
@@ -75,6 +120,12 @@ function Parents() {
     { key: 'phone_number', label: 'Phone Number' },
   ];
 
+  const filteredParents = parents.filter((parent) =>
+    parent.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+    parent.last_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+    parent.email_address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+    parent.phone_number.toLowerCase().includes(searchInput.toLowerCase())
+  );
   return (
     <Layout>
       <section className="m-12">
@@ -131,7 +182,9 @@ function Parents() {
                     />
                   </div>
                 </div>
-                <div>
+
+                <div className='grid grid-cols-2 gap-4'>
+                    <div>
                   <label className="block text-gray-600 mb-1 mt-4">Email</label>
                   <input
                     className="border border-gray-300 py-2 px-4 w-full rounded"
@@ -154,6 +207,39 @@ function Parents() {
                     required
                   />
                 </div>
+                </div>
+
+                <div className='grid grid-cols-2 gap-4'>
+                 <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Password</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="text"
+                    value={formData.create_password || ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, create_password: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Confirm Password</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="text"
+                    value={formData.confirm_password || ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, confirm_password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                </div>
+
+                
+                {emailError && <p className="text-red-500">{emailError}</p>}
+                {phoneError && <p className="text-red-500">{phoneError}</p>}
+
+
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
@@ -164,14 +250,12 @@ function Parents() {
           </div>
         </div>
       )}
-        {parentData.length > 0 ? (
-           <DynamicTable
-           data={parentData}
-           columns={columns}
-           onEdit={handleEdit}
-           onDelete={handleDelete}
-         />
-          ) : (
+        {filteredParents.length > 0 ? (
+          <DynamicTable 
+          data={filteredParents} 
+          columns={columns} 
+          />
+        ) : (
           <div className="flex flex-col items-center h-full">
             <img src="media/empty.jpg" alt="empty page" className="ml-96" />
             <div className="text-center text-maingrey ml-96">

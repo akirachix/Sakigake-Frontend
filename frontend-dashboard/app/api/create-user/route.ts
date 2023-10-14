@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/config";
+
 export async function POST(request: Request) {
   try {
     if (!BASE_URL) {
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
       body: JSON.stringify(body),
     });
     const user = await result.json();
-console.log('users', user);
+    console.log('users', user);
     return new Response(JSON.stringify(user), {
       status: 201,
       statusText: "Success",
