@@ -8,8 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
- feature/login
-      colors: { 
+      backgroundImage: {
+        pattern: "url('/media/background.png')",
+      },
+      colors:{
         textblue:'#008CBF',
         navyblue:'#303972',
         grey:'#E5E5E5',
@@ -21,33 +23,6 @@ const config: Config = {
         bgblue:'#008CBF',
         buttonblue:'#509CDB',
         gregrey:'#CECECE',
-      },
-      fontFamily:{
-        baloo:[ 'Baloo Bhai 2', 'cursive' ],
-        jost:[ 'Jost' ]
-      },
-      width: {
-        '248': '248px',
-        '208px':'208px',
-        '160':'160 px',
-
-      },
-      height: {
-        '42':'42',
-        '128':'128',
-        '100':'100 px'
-      },
-      margin: {
-        '150':'150',
-      },
-      fontSize:{
-        '28px':'28px'
-      }
-
-      backgroundImage: {
-        pattern: "url('/images/background.png')",
-      },
-      colors:{
         mainblue: "#008CBF",
         hoverblue: "#509CDB",
         white: "#fff",
@@ -55,12 +30,6 @@ const config: Config = {
         bordercolor:'#CECECE',
       }
     },
-    fontFamily:{
-      baloo:[ 'Baloo Bhai 2', 'cursive' ],
-      jost:[ 'Jost' ]
- dev
-    },
-
   },
   plugins: [],
 }

@@ -1,49 +1,105 @@
 'use client'
-import React, { useState } from "react";
-import { TbX, TbEdit } from "react-icons/tb";
-import { AiOutlineDelete } from "react-icons/ai";
-import DynamicTable from "../atoms/DynamicTable";
-import SearchBar from "../atoms/DynamicSearch";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { TbX } from 'react-icons/tb';
+import DynamicTable from '../atoms/dynamictable/dynamictable';
+import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
+import Layout from '../components/Layout';
+import useGetTeacher from '../hooks/useGetTeacher';
+import usePostTeacher from '../hooks/usePostTeacher';
 
 interface Teacher {
-  teacher: string;
-  grade: string;
-  email: string;
-  phoneNumber: string;
+  first_name: string;
+  last_name: string;
+  email_address: string | null;
+  phone_number: string;
 }
 
-const Teachers: React.FC = () => {
+const Teachers = () => {
+  const { teachers: initialTeachers, error: apiError } = useGetTeacher();
+  const { addTeacher, error: postError, isLoading: isPosting } = usePostTeacher();
   const [showForm, setShowForm] = useState(false);
-  const [teacher, setTeacher] = useState<Teacher[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [formData, setFormData] = useState<Teacher>({
-    teacher: "",
-    grade: "",
-    email: "",
-    phoneNumber: "",
+    first_name: '',
+    last_name: '',
+    email_address: '',
+    phone_number: '',
   });
-  const [searchInput, setSearchInput] = useState("");
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setTeacher([...teacher, formData]);
-    setFormData({ teacher: "", grade: "", email: "", phoneNumber: "" });
+  const [searchInput, setSearchInput] = useState('');
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(apiError || null);
+
+  useEffect(() => {
+    if (apiError) {
+      setError(apiError);
+    } else {
+      setTeachers(initialTeachers);
+      setError(null);
+    }
+  }, [apiError, initialTeachers]);
+
+const handleFormSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+
+  try {
+    if (
+      teachers.some(
+        (teacher) => 
+        teacher.email_address?.toLowerCase() ===
+        formData.email_address?.toLowerCase() || 
+        teacher.phone_number.toLowerCase() ===
+        formData.phone_number.toLowerCase()
+      )
+    ) {
+      throw new Error('phone number arleady exists');
+    }
+
+   if (editingIndex !== null) {
+      const updatedTeachers = [...teachers];
+      updatedTeachers[editingIndex] = formData;
+      setTeachers(updatedTeachers);
+      setEditingIndex(null);setEditingIndex
+    } else {
+      await addTeacher(formData);
+      setTeachers([...teachers, formData]);
+    }
+
+       setFormData({
+      first_name: '',
+      last_name: '',
+      email_address: '',
+      phone_number: '',
+    });
     setShowForm(false);
-  };
+    setError(null);
+  } catch (error: any) {
+    setError(error.message)
+  }
+};
 
-  const handleDeleteTeacher = (index: number) => {
-    const updatedTeacherList = [...teacher];
-    updatedTeacherList.splice(index, 1);
-    setTeacher(updatedTeacherList);
-  };
+const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setError(null);
+  setFormData({ ...formData, phone_number: e.target.value });
+};
 
-  const handleEditTeacher = (index: number) => {
-    const editedTeacher = teacher[index];
-    setFormData(editedTeacher);
-    handleDeleteTeacher(index);
-    setShowForm(true);
-  };
+  const columns = [
+    { key: 'first_name', label: 'First Name' },
+    { key: 'last_name', label: 'Last Name' },
+    { key: 'email_address', label: 'Email Address' },
+    { key: 'phone_number', label: 'Phone Number' },
+  ];
+
+  const filteredTeachers = teachers.filter(
+    (teacher) =>
+      teacher.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      teacher.last_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      teacher.email_address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+      teacher.phone_number.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   return (
+    <Layout>
     <section className="m-12">
       <div className="flex justify-between items-center fixed p-4">
         <h1 className="text-3xl font-bold text-mainblue">Teachers</h1>
@@ -55,9 +111,8 @@ const Teachers: React.FC = () => {
         </button>
       </div>
       <div className="mb-6 pt-24">
-        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} placeholder="Search for a teacher ..."/>
       </div>
-
       {showForm && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="fixed inset-0 bg-gray-500 opacity-50 z-40"></div>
@@ -73,92 +128,90 @@ const Teachers: React.FC = () => {
               <div className="mb-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-600 mb-1">Teacher Name</label>
+                    <label className="block text-gray-600 mb-1">First Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.teacher}
-                      onChange={(e) =>
-                        setFormData({ ...formData, teacher: e.target.value })
+                      value={formData.first_name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setFormData({ ...formData, first_name: e.target.value })
                       }
                       required
                     />
                   </div>
-
                   <div>
-                    <label className="block text-gray-600 mb-1">Grade</label>
+                    <label className="block text-gray-600 mb-1">Last Name</label>
                     <input
                       className="border border-gray-300 py-2 px-4 w-full rounded"
                       type="text"
-                      value={formData.grade}
-                      onChange={(e) =>
-                        setFormData({ ...formData, grade: e.target.value })
+                      value={formData.last_name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setFormData({ ...formData, last_name: e.target.value })
                       }
                       required
                     />
                   </div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4 mt-5">
-                  <div>
-                    <label className="block text-gray-600 mb-1">Email</label>
-                    <input
-                      className="border border-gray-300 py-2 px-4 w-full rounded"
-                      type="text"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-600 mb-1">Phone Number</label>
-                    <input
-                      className="border border-gray-300 py-2 px-4 w-full rounded"
-                      type="text"
-                      value={formData.phoneNumber}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phoneNumber: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
+                <div className='grid grid-cols-2 gap-4'>
+                <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Email</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="email"
+                    value={formData.email_address || ''}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, email_address: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 mb-1 mt-4">Phone Number</label>
+                  <input
+                    className="border border-gray-300 py-2 px-4 w-full rounded"
+                    type="text"
+                    value={formData.phone_number}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, phone_number: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                </div>
+                <div className='grid grid-cols-2 gap-4'>
+                
+                {error && (
+                <div className="error-message mb-4 text-red-400">
+                  {error}
+                </div>
+              )}
                 </div>
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
-                  Add Teacher
+                  {editingIndex !== null ? 'Update' : 'Submit'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-
-      {teacher.length > 0 ? (
-        <DynamicTable
-          data={teacher}
-          columns={[
-            { key: 'teacher', label: 'Teacher' },
-            { key: 'grade', label: 'Grade' },
-            { key: 'email', label: 'Email' },
-            { key: 'phoneNumber', label: 'Phone Number' },
-          ]}
-          onEdit={handleEditTeacher}
-          onDelete={handleDeleteTeacher}
-        />
-      ) : (
-        <div className="flex flex-col items-center h-full ">
-          <img src="images/empty.jpg" alt="empty page" className="ml-96" />
-          <div className="text-center text-maingrey ml-96">
-            <h2 className="text-2xl pb-4 font-semibold">No Teacher at this time</h2>
-            <p className="">Teachers will appear here after you add them.</p>
-          </div>
-        </div>
-      )}
+       {filteredTeachers.length > 0 ? (
+          <DynamicTable
+          data={filteredTeachers}
+          columns={columns}
+          />
+        ):(
+    <div className="flex flex-col items-center h-full">
+      <img src="media/empty.jpg" alt="empty page" className="ml-96" />
+      <div className="text-center text-maingrey ml-96">
+       <h2 className="text-2xl pb-4 font-semibold">No Teacher at this time</h2>
+       <p className="">Teacher will appear here after you add them.</p>
+      </div>
+    </div>
+)}
     </section>
+    </Layout>
   );
 };
-
 export default Teachers;
+
