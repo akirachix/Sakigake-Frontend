@@ -6,12 +6,14 @@ import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 import Layout from '../components/Layout';
 import useGetTeacher from '../hooks/useGetTeacher';
 import usePostTeacher from '../hooks/usePostTeacher';
+
 interface Teacher {
   first_name: string;
   last_name: string;
   email_address: string | null;
   phone_number: string;
 }
+
 const Teachers = () => {
   const { teachers: initialTeachers, error: apiError } = useGetTeacher();
   const { addTeacher, error: postError, isLoading: isPosting } = usePostTeacher();
@@ -23,9 +25,11 @@ const Teachers = () => {
     email_address: '',
     phone_number: '',
   });
+
   const [searchInput, setSearchInput] = useState('');
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(apiError || null);
+
   useEffect(() => {
     if (apiError) {
       setError(apiError);
@@ -34,20 +38,23 @@ const Teachers = () => {
       setError(null);
     }
   }, [apiError, initialTeachers]);
+
 const handleFormSubmit = async (e: FormEvent) => {
   e.preventDefault();
+
   try {
     if (
       teachers.some(
-        (teacher) =>
+        (teacher) => 
         teacher.email_address?.toLowerCase() ===
-        formData.email_address?.toLowerCase() ||
+        formData.email_address?.toLowerCase() || 
         teacher.phone_number.toLowerCase() ===
         formData.phone_number.toLowerCase()
       )
     ) {
       throw new Error('phone number arleady exists');
     }
+
    if (editingIndex !== null) {
       const updatedTeachers = [...teachers];
       updatedTeachers[editingIndex] = formData;
@@ -57,6 +64,7 @@ const handleFormSubmit = async (e: FormEvent) => {
       await addTeacher(formData);
       setTeachers([...teachers, formData]);
     }
+
        setFormData({
       first_name: '',
       last_name: '',
@@ -69,16 +77,19 @@ const handleFormSubmit = async (e: FormEvent) => {
     setError(error.message)
   }
 };
+
 const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
   setError(null);
   setFormData({ ...formData, phone_number: e.target.value });
 };
+
   const columns = [
     { key: 'first_name', label: 'First Name' },
     { key: 'last_name', label: 'Last Name' },
     { key: 'email_address', label: 'Email Address' },
     { key: 'phone_number', label: 'Phone Number' },
   ];
+
   const filteredTeachers = teachers.filter(
     (teacher) =>
       teacher.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -86,6 +97,7 @@ const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
       teacher.email_address?.toLowerCase().includes(searchInput.toLowerCase()) ||
       teacher.phone_number.toLowerCase().includes(searchInput.toLowerCase())
   );
+
   return (
     <Layout>
     <section className="m-12">
@@ -166,6 +178,7 @@ const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
                 </div>
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
+                
                 {error && (
                 <div className="error-message mb-4 text-red-400">
                   {error}
@@ -201,3 +214,4 @@ const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
   );
 };
 export default Teachers;
+

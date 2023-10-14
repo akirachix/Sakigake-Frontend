@@ -8,7 +8,7 @@ export async function POST(request: Request) {
       });
     }
     const body = await request.json().then(response => response);
-    const result = await fetch(`https://sakigake-backend-ecc1b0d1bf4d.herokuapp.com/account/schools/signup/registered`, {
+    const result = await fetch(`${BASE_URL}/account/schools/signup/registered`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       body: JSON.stringify(body),
     });
     const user = await result.json();
-console.log('users', user);
+    console.log('users', user);
     return new Response(JSON.stringify(user), {
       status: 201,
       statusText: "Success",

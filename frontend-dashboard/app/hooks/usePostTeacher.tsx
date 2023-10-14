@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { postTeacher } from "../utilities/utils";
+
 const usePostTeacher = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,4 +23,6 @@ const usePostTeacher = () => {
     isLoading,
   };
 };
+
 export default usePostTeacher;
+

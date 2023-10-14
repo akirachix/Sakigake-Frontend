@@ -73,7 +73,7 @@ const Sidebar = () => {
             <h2 className="text-lg font-medium pb-6 mt-5 pb-5">Are you sure you want to log out of your account?</h2>
             <div className="flex mt-1 pb-6">
               <button className="px-16 py-3 ml-3 font-bold rounded-md bg-white border-2 border-mainblue text-mainblue  hover:border-opacity-75" onClick={handleCancel}>Cancel</button>
-              <button className="px-16 py-3 ml-3 font-bold rounded-md bg-mainblue text-white hover:bg-opacity-75" onClick={handleContinue}>Continue</button>
+             <Link href="/signup"><button className="px-16 py-3 ml-3 font-bold rounded-md bg-mainblue text-white hover:bg-opacity-75" onClick={handleContinue}>Continue</button></Link> 
             </div>
           </div>
         </div>

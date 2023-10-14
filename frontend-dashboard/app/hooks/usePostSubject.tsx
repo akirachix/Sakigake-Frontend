@@ -6,9 +6,7 @@ export type SubjectData = {
 };
 const usePostSubject = () => {
   const postSubject = async (formData: SubjectData) => {
-    console.log(formData);
       const response = await addSubject(formData);
-      console.log(response);
       if (!response.ok) {
         throw new Error("Failed to add subject");
       }
