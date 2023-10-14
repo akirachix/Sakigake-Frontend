@@ -1,5 +1,4 @@
 import { BASE_URL } from "@/config";
-
 export async function POST(request: Request) {
   try {
     if (!BASE_URL) {
@@ -29,4 +28,3 @@ export async function POST(request: Request) {
     });
   }
 }
-

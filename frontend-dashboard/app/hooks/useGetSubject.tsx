@@ -4,7 +4,7 @@ interface SubjectData{
   id: number,
   subject_name: string,
   description: string,
-  teacher: null
+  teacher: number
 }
 const useGetSubjects=()=>{
     const [subject, setSubject]=useState<SubjectData[]>([]);

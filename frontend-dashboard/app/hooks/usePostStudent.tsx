@@ -1,4 +1,5 @@
 import { addStudent } from "../utilities/utils";
+
 export type StudentData = {
   first_name: string;
   last_name: string;
@@ -7,14 +8,28 @@ export type StudentData = {
   class_grade: string;
   parent: string;
 };
+
 const usePostStudent = () => {
+
   const postStudent = async (formData: StudentData) => {
-      const response = await addStudent(formData);
+    console.log(formData);
+    
+    
+      const response = await addStudent(formData); 
+      console.log(response);
+      
+
       if (!response.ok) {
         throw new Error("Failed to add student");
       }
+
       return response;
   };
-  return { postStudent};
+
+  return { postStudent}; 
 };
+
 export default usePostStudent;
+
+
+

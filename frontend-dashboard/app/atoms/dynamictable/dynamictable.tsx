@@ -5,6 +5,7 @@ import { TbEdit } from 'react-icons/tb';
 interface Column {
   key: string;
   label: string;
+  
 }
 
 interface DynamicTableProps {

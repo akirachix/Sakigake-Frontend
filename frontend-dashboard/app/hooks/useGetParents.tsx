@@ -1,41 +1,39 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { getParent } from "../utilities/utils";
-interface ApiResponse {
-  first_name: string;
-  last_name: string;
-  email_address: string | null;
-  phone_number: string;
-  create_password: string | null;
-}
+
 interface Parent {
+  id: number;
   first_name: string;
   last_name: string;
-  email_address: string | null;
+  email_address: string;
   phone_number: string;
-  create_password: string | null;
-  confirm_password: string;
 }
+
 const useGetParents = () => {
   const [parents, setParents] = useState<Parent[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: ApiResponse[] = await getParent();
-        const filteredParents: Parent[] = response.map(parent => {
-          return {
-            ...parent,
-            confirm_password: ""
-          };
-        });
-        setParents(filteredParents);
-        setError(null);
-      } catch (error) {
-        setError("Failed to fetch parents. Please try again later.");
+        const data = await getParent();
+        setParents(data);
+        setIsLoading(false);
+      } catch (error: any) {
+        setError(error.message || "Failed to fetch parents data.");
+        setIsLoading(false);
       }
     };
+
     fetchData();
-  }, []);
-  return { parents, error };
+  }, []); 
+
+  return {
+    parents,
+    error,
+    isLoading,
+  };
 };
+
 export default useGetParents;

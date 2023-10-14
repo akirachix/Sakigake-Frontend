@@ -10,6 +10,7 @@ interface StudentData{
     date_updated_at:string;
     class_grade:number;
     parent:null
+
 }
 const useGetStudents=()=>{
     const [student, setStudent]=useState<StudentData[]>([]);
@@ -22,3 +23,6 @@ const useGetStudents=()=>{
     return {student}
 }
 export default useGetStudents
+
+
+

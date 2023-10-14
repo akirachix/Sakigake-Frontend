@@ -1,6 +1,5 @@
 'use client'
 import { useState } from "react";
-import { registerUser } from "../utilities/utils";
 
 interface FormData {
   school_name: string;
@@ -37,3 +36,7 @@ const useCreateUsers = () => {
 };
 
 export default useCreateUsers;
+
+function registerUser(formData: FormData) {
+  throw new Error("Function not implemented.");
+}

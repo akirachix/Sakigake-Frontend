@@ -1,8 +1,12 @@
-import Signup from "./signup/page"
+
+import Sidebar from "./components/Sidebar";
+import Login from "./login/page";
+
 export default function Home() {
   return(
     <main>
-      <Signup/>
+      {/* <Sidebar/> */}
+      <Login/>
     </main>    
                                                                                                                                         
   )

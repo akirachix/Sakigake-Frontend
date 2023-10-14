@@ -7,7 +7,7 @@ export async function GET(){
                 statusText:'failed'
             })
         }
-        const response= await fetch (`${BASE_URL}/account/schools/1/parents/register/`)
+        const response= await fetch (`${BASE_URL}grades/grades/`)
         const result = await response.json();
         return new Response(JSON.stringify(result),{
             status:200,
@@ -21,3 +21,10 @@ export async function GET(){
         })
     }
 }
+
+
+
+
+
+
+
