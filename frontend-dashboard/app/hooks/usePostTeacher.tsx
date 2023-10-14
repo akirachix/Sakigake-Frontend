@@ -10,9 +10,8 @@ const usePostTeacher = () => {
       const data = await postTeacher(teacherData);
       return data;
     } catch (error: any) {
-      setError(error.message || "Failed to add teachers");
-      throw error;
-    } finally {
+        setError(error.message);
+      } finally {
       setIsLoading(false);
     }
   };

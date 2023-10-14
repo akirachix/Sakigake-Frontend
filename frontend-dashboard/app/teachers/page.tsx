@@ -6,18 +6,15 @@ import SearchBar from '../atoms/dynamicsearchbar/dyamicsearchbar';
 import Layout from '../components/Layout';
 import useGetTeacher from '../hooks/useGetTeacher';
 import usePostTeacher from '../hooks/usePostTeacher';
-interface Teacher{
+interface Teacher {
   first_name: string;
   last_name: string;
   email_address: string | null;
   phone_number: string;
-  create_password: string | null;
-  confirm_password: string;
 }
-const Teachers: React.FC = () => {
-  const {teachers:initialTeachers,error:apiError} = useGetTeacher();
-  const {addTeacher,error:postError,isLoading:isPosting}=
-  usePostTeacher();
+const Teachers = () => {
+  const { teachers: initialTeachers, error: apiError } = useGetTeacher();
+  const { addTeacher, error: postError, isLoading: isPosting } = usePostTeacher();
   const [showForm, setShowForm] = useState(false);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [formData, setFormData] = useState<Teacher>({
@@ -25,82 +22,70 @@ const Teachers: React.FC = () => {
     last_name: '',
     email_address: '',
     phone_number: '',
-    create_password: '',
-    confirm_password: '',
   });
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState('');
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const[error, setError] = useState<string | null>(apiError || null)
-  useEffect(()=>{
-    if(apiError){
+  const [error, setError] = useState<string | null>(apiError || null);
+  useEffect(() => {
+    if (apiError) {
       setError(apiError);
-    }else{
+    } else {
       setTeachers(initialTeachers);
       setError(null);
     }
-  },[apiError,initialTeachers])
-  const handleFormSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      if (
-        teachers.some(
-          (teacher) =>
-            teacher.email_address?.toLowerCase() === formData.email_address?.toLowerCase() ||
-            teacher.phone_number.toLowerCase() === formData.phone_number.toLowerCase()
-        )
-      ) {
-        throw new Error("This teacher already exists.");
-      }
-  
-      if (
-        !formData.first_name ||
-        !formData.last_name ||
-        !formData.phone_number ||
-        !formData.create_password ||
-        formData.create_password !== formData.confirm_password
-      ) {
-        throw new Error("All fields are required, and passwords must match.");
-      }
-  
-      if (editingIndex !== null) {
-        const updatedTeachers = [...teachers];
-        updatedTeachers[editingIndex] = formData;
-        setTeachers(updatedTeachers);
-        setEditingIndex(null);
-      } else {
-        await addTeacher(formData);
-        setTeachers([...teachers, formData]);
-      }
-  
-      setFormData({
-        first_name: '',
-        last_name: '',
-        email_address: '',
-        phone_number: '',
-        create_password: '',
-        confirm_password: '',
-      });
-      setShowForm(false);
-      setError(null); 
-    } catch (error:any) {
-      console.error('Error adding or editing teacher: ', error);
-      setError(error.message || 'Failed to add/update teacher.');
+  }, [apiError, initialTeachers]);
+const handleFormSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  try {
+    if (
+      teachers.some(
+        (teacher) =>
+        teacher.email_address?.toLowerCase() ===
+        formData.email_address?.toLowerCase() ||
+        teacher.phone_number.toLowerCase() ===
+        formData.phone_number.toLowerCase()
+      )
+    ) {
+      throw new Error('phone number arleady exists');
     }
-  };
-  
-
+   if (editingIndex !== null) {
+      const updatedTeachers = [...teachers];
+      updatedTeachers[editingIndex] = formData;
+      setTeachers(updatedTeachers);
+      setEditingIndex(null);setEditingIndex
+    } else {
+      await addTeacher(formData);
+      setTeachers([...teachers, formData]);
+    }
+       setFormData({
+      first_name: '',
+      last_name: '',
+      email_address: '',
+      phone_number: '',
+    });
+    setShowForm(false);
+    setError(null);
+  } catch (error: any) {
+    setError(error.message)
+  }
+};
+const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setError(null);
+  setFormData({ ...formData, phone_number: e.target.value });
+};
   const columns = [
     { key: 'first_name', label: 'First Name' },
     { key: 'last_name', label: 'Last Name' },
     { key: 'email_address', label: 'Email Address' },
     { key: 'phone_number', label: 'Phone Number' },
   ];
-  const filteredTeachers = teachers.filter((teacher) =>
-  teacher.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
-  teacher.last_name.toLowerCase().includes(searchInput.toLowerCase()) ||
-  teacher.email_address?.toLowerCase().includes(searchInput.toLowerCase()) ||
-  teacher.phone_number.toLowerCase().includes(searchInput.toLowerCase())
-);
+  const filteredTeachers = teachers.filter(
+    (teacher) =>
+      teacher.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      teacher.last_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      teacher.email_address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+      teacher.phone_number.toLowerCase().includes(searchInput.toLowerCase())
+  );
   return (
     <Layout>
     <section className="m-12">
@@ -181,29 +166,11 @@ const Teachers: React.FC = () => {
                 </div>
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
-                  <div>
-                  <label className="block text-gray-600 mb-1 mt-4">Password</label>
-                  <input
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.create_password || ''}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setFormData({ ...formData, create_password: e.target.value })
-                    }
-                  />
+                {error && (
+                <div className="error-message mb-4 text-red-400">
+                  {error}
                 </div>
-                <div>
-                  <label className="block text-gray-600 mb-1 mt-4">Confirm Password</label>
-                  <input
-                    className="border border-gray-300 py-2 px-4 w-full rounded"
-                    type="text"
-                    value={formData.confirm_password || ''}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setFormData({ ...formData, confirm_password: e.target.value })
-                    }
-                    required
-                  />
-                </div>
+              )}
                 </div>
               </div>
               <div className="flex justify-left font-bold text-sm pt-10">

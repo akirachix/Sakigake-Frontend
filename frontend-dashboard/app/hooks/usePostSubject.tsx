@@ -1,7 +1,8 @@
 import { addSubject } from "../utilities/utils";
 export type SubjectData = {
   subject_name: string;
-  teacher:  string;
+  description:string
+  teacher:  number;
 };
 const usePostSubject = () => {
   const postSubject = async (formData: SubjectData) => {

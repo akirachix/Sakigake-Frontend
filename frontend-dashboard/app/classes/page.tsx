@@ -16,7 +16,7 @@ interface FormData {
 const Classes: React.FC = () => {
   const { classData, loading: getClassLoading } = useGetClass();
   const { postClass, loading: postClassLoading, error } = usePostClass();
-  const { teachers, error: teachersError } = useGetTeachers(); 
+  const { teachers, error: teachersError } = useGetTeachers();
 
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -37,6 +37,19 @@ const Classes: React.FC = () => {
     { key: 'class_teacher', label: 'Teacher' },
   ];
 
+
+  const modifiedClassData = classData.map((classItem) => {
+    const teacherId: string | undefined = classItem.class_teacher;
+    const foundTeacher = teacherId !== undefined ? teachers.find((teacher) => teacher.id === +teacherId) : undefined;
+    const teacherName = foundTeacher
+      ? `${foundTeacher.first_name} ${foundTeacher.last_name}`
+      : 'Unknown Teacher';
+  
+    return {
+      ...classItem,
+      class_teacher: teacherName,
+    };
+  });
 
   return (
     <Layout>
@@ -68,7 +81,7 @@ const Classes: React.FC = () => {
                 <div className="mb-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-gray-600 mb-1">Class Name</label>
+                      <label className="block text-gray-600 mb-1">Grade</label>
                       <input
                         className="border border-gray-300 py-2 px-4 w-full rounded"
                         type="text"
@@ -85,14 +98,14 @@ const Classes: React.FC = () => {
                         className="border border-gray-300 py-2 px-4 w-full rounded"
                         value={formData.class_teacher}
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                          setFormData({ ...formData, class_teacher: (e.target.value) })
+                          setFormData({ ...formData, class_teacher: e.target.value })
                         }
                         required
                       >
                         <option value="0">Select Teacher</option>
                         {teachers.map((teacher) => (
                           <option key={teacher.id} value={teacher.id}>
-                            {teacher.first_name}
+                            {`${teacher.first_name} ${teacher.last_name}`}
                           </option>
                         ))}
                       </select>
@@ -109,8 +122,8 @@ const Classes: React.FC = () => {
           </div>
         )}
 
-{classData.length > 0 ? (
-          <DynamicTable data={classData} columns={columns} />
+        {classData.length > 0 ? (
+          <DynamicTable data={modifiedClassData} columns={columns} />
         ) : (
           <div className="flex flex-col items-center h-full">
             <img src="media/empty.jpg" alt="empty page" className="ml-96" />
@@ -120,7 +133,7 @@ const Classes: React.FC = () => {
             </div>
           </div>
         )}
-        
+
       </section>
     </Layout>
   );
