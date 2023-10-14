@@ -9,9 +9,7 @@ export type StudentData = {
 };
 const usePostStudent = () => {
   const postStudent = async (formData: StudentData) => {
-    console.log(formData);
       const response = await addStudent(formData);
-      console.log(response);
       if (!response.ok) {
         throw new Error("Failed to add student");
       }
